@@ -1,3 +1,4 @@
+from re import A
 from tkinter.tix import Tree
 import pandas as pd
 import math
@@ -24,3 +25,6 @@ data['totalSleepTimeMin'] = data['deepSleepTime'] + data["shallowSleepTime"] + d
 data['totalSleeptimeHours'] = round(data['totalSleepTimeMin']/60, 2)
 
 print(data)
+
+data.to_csv('C:/Users/kevin/Documents/Personal/Athletics/SmartWatchData/SleepDataCleaned.csv', index=False, mode='a', header=False)
+
