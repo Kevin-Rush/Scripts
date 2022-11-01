@@ -1,7 +1,4 @@
-from re import A
-from tkinter.tix import Tree
 import pandas as pd
-import math
 
 data = pd.read_csv(r'C:\Users\kevin\Documents\Personal\Athletics\SmartWatchData\SLEEP_1666271863586.csv')
 data = data.iloc[:,:-21] #Get rid of the 21 unammed columns at the end of the csv file
