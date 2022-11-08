@@ -8,10 +8,16 @@ print('File name : ', os.path.abspath("requirements.txt"))
 print('File name : ', os.path.abspath("requirements_check.py"))
 print()
 
-f = open("requirements.txt", "r")
+reqs_file = open("requirements.txt", "r")
+libs_file = open("libraries.txt")
 
 libraries = []
 
-for i in f.readlines():
+for i in reqs_file.readlines():
     lib_name = i.split("=", 1)[0]
-    print(lib_name)
+    libraries.append(lib_name)
+
+excluded_libs = []
+for i in libs_file.readlines():
+    lib_name = i.split("=", 1)[0]
+    libraries.append(lib_name)
