@@ -11,19 +11,29 @@ print()
 reqs_file = open("requirements.txt", "r")
 libs_file = open("libraries.txt")
 
-libraries = []
+req_libraries = []
 
 for i in reqs_file.readlines():
     lib_name = i.split("=", 1)[0]
-    libraries.append(lib_name)
+    req_libraries.append(lib_name)
 
 excluded_libs = []
 for i in libs_file.readlines():
     if i[0] == "#":
         continue
-    lib_name = i.split(" ")
+    libs_line = i.split(" ")
     
-    if lib_name[-1] == "\n":
-        lib_name.pop(-1)
-    lib_name[-1] = lib_name[-1].split("\n")[0]
-    print(lib_name)
+    if libs_line[-1] == "\n":
+        libs_line.pop(-1)
+    libs_line[-1] = libs_line[-1].split("\n")[0]
+
+    libs_line.remove("import")
+    k = 0
+    while k < len(libs_line):
+        if libs_line[k] == "as" or libs_line[k] == "from":
+
+            libs_line.pop(k)
+            k -=1
+        k += 1
+    
+    print(libs_line)
