@@ -17,7 +17,7 @@ for i in reqs_file.readlines():
     lib_name = i.split("=", 1)[0]
     req_libraries.append(lib_name)
 
-excluded_libs = []
+all_libs = []                   #clean up the input from the libraries.txt file and save all libraries in a single list
 for i in libs_file.readlines():
     if i[0] == "#":
         continue
@@ -36,4 +36,11 @@ for i in libs_file.readlines():
             k -=1
         k += 1
     
-    print(libs_line)
+    libs_line.pop(1)
+    current_lib = libs_line[0]
+    current_lib = current_lib.split(".")
+    current_lib = current_lib[0]
+    if current_lib not in all_libs:
+        all_libs.append(current_lib)
+    
+print(all_libs)
