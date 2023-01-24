@@ -5,6 +5,7 @@ os.getcwd()
 
 #check whether your file exists in the current working directory
 print('File name : ', os.path.abspath("requirements.txt"))
+print('File name : ', os.path.abspath("libraries.txt"))
 print('File name : ', os.path.abspath("requirements_check.py"))
 print()
 
@@ -17,7 +18,7 @@ for i in reqs_file.readlines():
     lib_name = i.split("=", 1)[0]
     req_libraries.append(lib_name)
 
-all_libs = []                   #clean up the input from the libraries.txt file and save all libraries in a single list
+file_libs = []                   #clean up the input from the libraries.txt file and save all libraries in a single list
 for i in libs_file.readlines():
     if i[0] == "#":
         continue
@@ -40,7 +41,12 @@ for i in libs_file.readlines():
     current_lib = libs_line[0]
     current_lib = current_lib.split(".")
     current_lib = current_lib[0]
-    if current_lib not in all_libs:
-        all_libs.append(current_lib)
+    if current_lib not in file_libs:
+        file_libs.append(current_lib)
     
-print(all_libs)
+missing_libs = []
+for i in file_libs:
+    if i not in req_libraries:
+        missing_libs.append(i)
+
+print(missing_libs)
