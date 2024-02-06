@@ -4,7 +4,14 @@ import glob
 import win32com.client
 from pdf2image import convert_from_path
 from wand.image import Image
+import openai
+import base64
+import requests
 
+with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
+    api_key = file.read()
+
+openai.api_key = api_key
 
 def convert(files, formatType = 32):
     powerpoint = win32com.client.Dispatch("Powerpoint.Application")
@@ -16,14 +23,61 @@ def convert(files, formatType = 32):
         deck.Close()
     powerpoint.Quit()
 
-def pdf_to_images(pdf_file):
+def pdf_to_images(pdf_file, output_folder):
     # Convert PDF to images using wand
     with Image(filename=pdf_file, resolution=300) as img:
         img.compression_quality = 99
-        img.save(filename="output.jpg")
+        img.save(filename=output_folder + "slide.jpg")
 
-files = glob.glob(r'C:\Users\kevin\Downloads\test_file.pptx')
+# Function to encode the image
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+files = glob.glob(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\test_file.pptx')
 convert(files)
 
-pdf_file = "C:/Users/kevin/Downloads/test_file.pdf"
-pdf_to_images(pdf_file)
+root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/"
+pdf_file = root + "/test_file.pdf"
+output_folder = root + "ppxt_images/"
+pdf_to_images(pdf_file, output_folder)
+    
+# Get a list of the image files
+image_files = os.listdir(output_folder)
+
+# Iterate over the image files
+for image_file in image_files:
+    # Full path to the image file
+    image_path = os.path.join(output_folder, image_file)
+    base64_image = encode_image(image_path)
+
+    headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {api_key}"
+    }
+
+    payload = {
+    "model": "gpt-4-vision-preview",
+    "messages": [
+        {
+        "role": "user",
+        "content": [
+            {
+            "type": "text",
+            "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing. For visual appeal, I want you to tell me if the information on the slide is  You should also provide feedback on the overall quality of the slide. Please only consider the text I've given, and respond in a tone that is appropriate for giving feedback to a colleague."
+            },
+            {
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:image/jpeg;base64,{base64_image}"
+            }
+            }
+        ]
+        }
+    ],
+    #"max_tokens": 300
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+
+    print(response.json())
