@@ -1,20 +1,9 @@
-import sys
 import os
 import glob
 import win32com.client
-from pdf2image import convert_from_path
 from wand.image import Image
-import openai
-import base64
-import requests
 from PIL import Image as PilImage
 import numpy as np
-import random
-
-with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
-    api_key = file.read()
-
-openai.api_key = api_key
 
 def convert(files, formatType = 32):
     powerpoint = win32com.client.Dispatch("Powerpoint.Application")
@@ -45,10 +34,16 @@ def pdf_to_images(pdf_file, output_folder):
             extension = ".jpg"
             rgb_img.save(output_folder + base_filename + "_" + str(i) + extension, "JPEG")
 
-files = glob.glob(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\test_file.pptx')
-convert(files)
 
-root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/"
-pdf_file = root + "/test_file.pdf"
-output_folder = root + "ppxt_images/"
-pdf_to_images(pdf_file, output_folder)
+def run(ppxt_file, output_folder_name):
+    # Convert ppxt to PDF to images
+    convert(ppxt_file)
+
+    #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
+    
+    root = output_folder_name
+    pdf_file = root + "/test_file.pdf"
+    output_folder = root + "ppxt_images/"
+    pdf_to_images(pdf_file, output_folder)
+
+    pdf_to_images(pdf_file, output_folder)
