@@ -7,6 +7,9 @@ from wand.image import Image
 import openai
 import base64
 import requests
+from PIL import Image as PilImage
+import numpy as np
+import random
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
     api_key = file.read()
@@ -23,11 +26,27 @@ def convert(files, formatType = 32):
         deck.Close()
     powerpoint.Quit()
 
+
 def pdf_to_images(pdf_file, output_folder):
     # Convert PDF to images using wand
     with Image(filename=pdf_file, resolution=300) as img:
         img.compression_quality = 99
-        img.save(filename=output_folder + "slide.jpg")
+        # Iterate over each page in the PDF
+        for i, page in enumerate(img.sequence):
+            # Convert wand image to PIL image
+            pil_img = PilImage.fromarray(np.array(page))
+            # Convert image to RGB mode
+            rgb_img = pil_img.convert("RGB")
+            # Resize the image
+            max_size = (518, 518)
+            rgb_img.thumbnail(max_size, PilImage.ANTIALIAS)
+            # Save the image with a unique filename
+            base_filename = "slide"
+            extension = ".jpg"
+            counter = 0
+            while os.path.exists(output_folder + base_filename + str(counter) + "_" + str(i) + extension):
+                counter += 1
+            rgb_img.save(output_folder + base_filename + str(counter) + "_" + str(i) + extension, "JPEG")
 
 # Function to encode the image
 def encode_image(image_path):
@@ -41,7 +60,48 @@ root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/"
 pdf_file = root + "/test_file.pdf"
 output_folder = root + "ppxt_images/"
 pdf_to_images(pdf_file, output_folder)
-    
+
+
+# Get a list of the image files
+image_files = os.listdir(output_folder)
+
+# Full path to the image file
+image_path = r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\ppxt_images\slide_5.jpg"
+base64_image = encode_image(image_path)
+
+headers = {
+"Content-Type": "application/json",
+"Authorization": f"Bearer {api_key}"
+}
+
+payload = {
+"model": "gpt-4-vision-preview",
+"messages": [
+    {
+    "role": "user",
+    "content": [
+        {
+        "type": "text",
+        "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing. For visual appeal, I want you to tell me if the information on the slide is  You should also provide feedback on the overall quality of the slide. Please only consider the text I've given, and respond in a tone that is appropriate for giving feedback to a colleague."
+        },
+        {
+        "type": "image_url",
+        "image_url": {
+            "url": f"data:image/jpeg;base64,{base64_image}"
+        }
+        }
+    ]
+    }
+],
+}
+
+response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+
+print(response.json())
+
+
+"""
+
 # Get a list of the image files
 image_files = os.listdir(output_folder)
 
@@ -81,3 +141,5 @@ for image_file in image_files:
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
 
     print(response.json())
+
+"""
