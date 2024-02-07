@@ -79,7 +79,7 @@ payload = {
     "content": [
         {
         "type": "text",
-        "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing. For visual appeal, I want you to tell me if the information on the slide is  You should also provide feedback on the overall quality of the slide. Please only consider the text I've given, and respond in a tone that is appropriate for giving feedback to a colleague."
+        "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing. For visual appeal, I want you to tell me if the information on the slide is presented in an effective way. Ensure to provide specific and actionable feedback. You should also provide feedback on the overall quality of the slide. Please only consider the text I've given."
         },
         {
         "type": "image_url",
@@ -90,9 +90,13 @@ payload = {
     ]
     }
 ],
+"max_tokens": 1251
 }
 
 response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+response = response.json()
 
-print(response.json())
-
+tokens = response['usage']
+response = response['choices'][0]['message']['content']
+print(response)
+print("Tokesn used: ", tokens)
