@@ -11,12 +11,13 @@ with open(json_file, 'r') as file:
 
 content = content["slides"]
 
-slide = presentation.slides.add_slide(presentation.slide_layouts[4])
-title = slide.shapes.title
-title.text = content[0]['title']
+for i in range(len(content)):
+    slide = presentation.slides.add_slide(presentation.slide_layouts[4])
+    title = slide.shapes.title
+    title.text = content[i]['title']
 
-content_text = slide.shapes[2]
-content_text.text = content[0]['content']
+    content_text = slide.shapes[2]
+    content_text.text = content[i]['content']
 
 # Save the presentation
 presentation.save("generated_presentation.pptx")
