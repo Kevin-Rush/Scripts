@@ -1,42 +1,12 @@
 from pptx import Presentation
 
 # Create a presentation object
-presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\test_file.pptx")
+presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\base_persentation.pptx")
 
 # Slide 1 - Title slide
 slide1 = presentation.slides.add_slide(presentation.slide_layouts[0])
 title = slide1.shapes.title
 title.text = "Improving the Performance of a Machine Learning Algorithm"
-
-# Slide 2 - Introduction
-slide2 = presentation.slides.add_slide(presentation.slide_layouts[1])
-content2 = slide2.shapes.title
-content2.text = "Introduction"
-
-# Slide 3 - Balancing Techniques
-slide3 = presentation.slides.add_slide(presentation.slide_layouts[2])
-content3 = slide3.shapes.title
-#content3.text = "Balancing Techniques"
-
-# Slide 4 - Using imbalanced-learn library
-slide4 = presentation.slides.add_slide(presentation.slide_layouts[3])
-content4 = slide4.shapes.title
-content4.text = "Using imbalanced-learn Library"
-
-# Slide 5 - Data Import
-slide5 = presentation.slides.add_slide(presentation.slide_layouts[4])
-content5 = slide5.shapes.title
-content5.text = "Data Import"
-
-# Slide 6 - Model Building
-slide6 = presentation.slides.add_slide(presentation.slide_layouts[4])
-content6 = slide6.shapes.title
-content6.text = "Model Building"
-
-# Slide 7 - Imbalanced Dataset
-slide7 = presentation.slides.add_slide(presentation.slide_layouts[4])
-content7 = slide7.shapes.title
-content7.text = "Imbalanced Dataset"
 
 # Set the content for each slide
 slides = [slide2, slide3, slide4, slide5, slide6, slide7]
@@ -51,10 +21,7 @@ content = [
 ]
 
 # Add content to each slide
-i = 0
 for slide, content_text in zip(slides, content):
-    print(i)
-    i += 1
     content_placeholder = slide
     content_placeholder.text = content_text
 
