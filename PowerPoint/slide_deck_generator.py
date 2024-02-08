@@ -16,8 +16,11 @@ for i in range(len(content)):
     title = slide.shapes.title
     title.text = content[i]['title']
 
-    content_text = slide.shapes[2]
-    content_text.text = content[i]['content']
+    slide_subtitle = slide.shapes[1]
+    slide_subtitle.text = content[i]['subtitle']
+
+    slide_content = slide.shapes[2]
+    slide_content.text = content[i]['content']
 
 # Save the presentation
 presentation.save("generated_presentation.pptx")
