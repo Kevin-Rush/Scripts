@@ -67,6 +67,5 @@ def evaluate_ppxt(ppxt_filepath):
         print()        
         
 
-# Usage
-ppxt_file = "C:/Users/kevin/Downloads/test_file.pptx"
-evaluate_ppxt(ppxt_file)
+def run(ppxt_file):
+    evaluate_ppxt(ppxt_file)

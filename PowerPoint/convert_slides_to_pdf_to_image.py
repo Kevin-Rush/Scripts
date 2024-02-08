@@ -32,18 +32,17 @@ def pdf_to_images(pdf_file, output_folder):
             # Save the image with a unique filename
             base_filename = "slide"
             extension = ".jpg"
-            rgb_img.save(output_folder + base_filename + "_" + str(i) + extension, "JPEG")
+            rgb_img.save(output_folder + base_filename + "_" + str(i+1) + extension, "JPEG")
 
 
-def run(ppxt_file, output_folder_name):
+def run(ppxt_file, root):
     # Convert ppxt to PDF to images
     convert(ppxt_file)
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
-    
-    root = output_folder_name
-    pdf_file = root + "/test_file.pdf"
+
+    pdf_file = root + "test_file.pdf"
+
     output_folder = root + "ppxt_images/"
-    pdf_to_images(pdf_file, output_folder)
 
     pdf_to_images(pdf_file, output_folder)
