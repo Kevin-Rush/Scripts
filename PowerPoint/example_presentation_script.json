@@ -1,0 +1,98 @@
+{
+    "slides": [
+        {
+            "title": "DECK TITLE",
+            "subtitle": "",
+            "content": "Introduction to Gen AI",
+            "notes": "Welcome, everyone. Today, we dive into the fascinating world of Generative Artificial Intelligence, or Generative AI, a frontier that merges the boundaries of creativity and machine intelligence."
+        },
+        {
+            "title": "LEGAL",
+            "subtitle": "",
+            "content": "",
+            "notes": ""
+        },
+        {
+            "title": "RECAP",
+            "subtitle": "",
+            "content": "",
+            "notes": ""
+        },
+        {
+            "title": "Review of Last Week",
+            "subtitle": "",
+            "content": "This is a demo so there is no last week to review.",
+            "notes": "That was easy!"
+        },
+        {
+            "title": "Agenda",
+            "subtitle": "",
+            "content": "What is Gen AI \nHow Gen AI Works \nExamples of Gen AI \nChallenges and Ethical Considerations \nConclusion \nClosing",
+            "notes": "Welcome, everyone. Today, we dive into the fascinating world of Generative Artificial Intelligence, or Generative AI, a frontier that merges the boundaries of creativity and machine intelligence."
+        },
+        {
+            "title": "What is Generative AI?",
+            "subtitle": "The Creative Power of Machines",
+            "content": "Generative AI is a subset of AI technologies capable of creating new content. \nThis capability isn't limited to just images or text but extends to music, videos, and even code. \nMachines take inspiration from existing human-made works to produce new content.  \nThe content produced can sometimes be indistinguishable from human-created content.",
+            "notes": "Generative AI is a subset of AI technologies with the unique ability to create new content. This isn't limited to just images or text but extends to music, videos, and even code. It's where machines take inspiration from existing human-made works to produce something new and sometimes, indistinguishable from human-created content."
+        },
+        {
+            "title": "How Generative AI Works",
+            "subtitle": "From Data to Creativity",
+            "content": "Generative AI achieves content creation through complex algorithms known as machine learning models. \nThese models fall particularly within the category of deep learning. \nThey are trained on vast datasets to learn patterns, styles, and structures. \nThis training enables the models to generate new content that mimics the characteristics of the training data.",
+            "notes": "But how does Generative AI achieve this? At its core are complex algorithms known as machine learning models, particularly those in the category of deep learning. These models are trained on vast datasets, learning patterns, styles, and structures. The training enables them to generate new content that mimics the characteristics of the training data."
+        },
+        {
+            "title": "TRANSITION",
+            "subtitle": "",
+            "content": "What are some examples of Generative AI?",
+            "notes": ""
+        },
+        {
+            "title": "Examples of Generative AI",
+            "subtitle": "Innovation through AI Models",
+            "content": "ChatGPT by OpenAI. \nExcels in human-like text. \nUseful for writing to coding.",
+            "notes": "One of the most well-known examples of Generative AI is GPT (Generative Pre-trained Transformer), developed by OpenAI. GPT models are particularly adept at understanding and generating human-like text, making them valuable for tasks ranging from writing articles to coding."
+        },
+        {
+            "title": "DALL-E",
+            "subtitle": "Picturing AI's Imagination",
+            "content": "DALL-E by OpenAI. \nGenerates images from text. \nTranslates language to visuals.",
+            "notes": "Another notable example is DALL-E, also by OpenAI, which generates images from textual descriptions. This showcases not just the ability to understand complex language but also to translate these understandings into visual representations."
+        },
+        {
+            "title": "Challenges and Ethical Considerations",
+            "subtitle": "Navigating AI's Complex Landscape",
+            "content": "Challenges and ethics in Generative AI. \nIssues with copyright and authenticity. \nImplications of AI content in society.",
+            "notes": "But Generative AI isn't without its challenges and ethical considerations. As we empower machines to create, we face questions about copyright, the authenticity of creation, and the implications of AI-generated content in our society."
+        },
+        {
+            "title": "Discussion",
+            "content": "What do you find the most exciting about gen AI? \nWhat are some potential challenges you see with gen AI? \nHow do you think gen AI will impact the future of creativity? \nWhat are some ethical considerations we should keep in mind",
+            "notes": "Discuss these questions with the group."
+        },
+        {
+            "title": "Activity",
+            "subtitle": "Jailbreak",
+            "content": "Get into groups, open ChatGPT and try to get it to do something unethical. \nReport back in 5 minutes. \nWe will discuss the results. \nRemember, this is a demo so there is no ChatGPT to open. \n",
+            "notes": "Don't actually do anything unethical, this is an excersise in trying to jailbreak the AI."
+        },
+        {
+            "title": "Key Takeaways",
+            "content": "Generative AI is a subset of AI technologies with the unique ability to create new content. \nGenerative AI models are trained on vast datasets, learning patterns, styles, and structures. \nGPT and DALL-E are notable examples of Generative AI. \nGenerative AI presents challenges and ethical considerations that we must navigate. \nGenerative AI offers a glimpse into a future where AI can not only analyze and understand but also create, innovate, and inspire. \nIt's crucial to navigate the ethical and practical challenges this technology presents, ensuring it serves to enhance human creativity and innovation rather than diminish it. \n",
+            "notes": "Today we discussed Generative AI, its capabilities, and its implications. We explored examples of Generative AI, such as GPT and DALL-E, and considered the challenges and ethical considerations that come with this technology. As we move forward, it's crucial to navigate the ethical and practical challenges this technology presents, ensuring it serves to enhance human creativity and innovation rather than diminish it. \n"
+        },
+        {
+            "title": "Conclusion",
+            "subtitle": "The Future of AI-Driven Creativity",
+            "content": "Generative AI marks a major advance in AI, promising a future of creation and inspiration, while highlighting the need to address its ethical and practical challenges to augment human creativity.",
+            "notes": "In conclusion, Generative AI represents a significant leap in the capabilities of artificial intelligence. It offers a glimpse into a future where AI can not only analyze and understand but also create, innovate, and inspire. As we move forward, it's crucial to navigate the ethical and practical challenges this technology presents, ensuring it serves to enhance human creativity and innovation rather than diminish it."
+        },
+        {
+            "title": "Closing",
+            "subtitle": "Thank you for your attention",
+            "content": "I look forward to exploring this exciting field together.",
+            "notes": ""
+        }
+    ]
+}
