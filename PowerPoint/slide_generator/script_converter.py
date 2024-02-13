@@ -4,21 +4,23 @@ import openai
 def convert_to_json(input_file, output_file, api_key):
 
     openai.api_key = api_key
-    messages=[
-        {"role": "system", "content": "You are a helpful slide deck writing that is helping me write a presentation. I will ask you to help me with various tasks such as summarizing a paragraph, generating short and informative titles, writing a conclusion, etc. Please always give the most pithy and direct wording possible without loosing the key information from the text! Berevity and accuracy are key! Please avoid words like utilize or delve or fancy language like exploring the world, mastering the art and science, etc. Additionally, never use colons. Thank you!"}
-    ]
+    
 
     with open(input_file, 'r') as file:
         paragraphs = file.read().split('\n\n')  # Split text into paragraphs
 
     data = []
     for paragraph in paragraphs:
+        messages=[
+        {"role": "system", "content": "You are a helpful slide deck writing that is helping me write a presentation. I will ask you to help me with various tasks such as summarizing a paragraph, generating short and informative titles, writing a conclusion, etc. Please always give the most pithy and direct wording possible without loosing the key information from the text! Berevity and accuracy are key! Please avoid words like utilize or delve or fancy language like exploring the world, mastering the art and science, etc. Additionally, never use colons. Thank you!"}
+        ]
         #if data is empty, add the title
         if not data:
-            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a direct and relevant title for this slide?"+paragraph.strip()})
+            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? Please make it 3 - 5 words long, and please do not use any colons!"+paragraph.strip()})
             title_completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
+            max_tokens=200
             )
 
             data.append({
@@ -40,22 +42,35 @@ def convert_to_json(input_file, output_file, api_key):
                 "notes": ""
             })
         else:
-            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a direct and relevant title for this slide?"+paragraph.strip()})
-            title_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? Please make it 3 - 5 words long, and please do NOT use any colons!"+paragraph.strip()})
+            title_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
             
-            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a direct and relevant subtitle for this slide? " + paragraph.strip() + " Please make the subtitle informative but different from the title." + title_completion['choices'][0]['message']['content']})
-            subtitle_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a subtitle for this slide? Please make it 3 - 5 words long, and please do not use any colons!" + paragraph.strip() + " Please make the subtitle informative but different from the title." + title_completion['choices'][0]['message']['content']})
+            subtitle_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
 
-            messages.append({"role": "user", "content": "Hello, can you summarize my notes from this slide in bullet points? Please try to capture the key points of the notes section but DO NOT simply repeat the notes. All bullets should capture the same meaning of the key points while saying it in a unique way. For your context, here is the slide title" + title_completion['choices'][0]['message']['content'] + " and subtitle: " + subtitle_completion['choices'][0]['message']['content'] +" here are my notes: " + paragraph.strip()})
-            content_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
-            #remove quotation marks from the content
-            content_completion['choices'][0]['message']['content'] = content_completion['choices'][0]['message']['content'].replace('"', '')
+            messages.append({"role": "user", "content": "Hello, can you summarize my notes from this slide in bullet points? Please try to capture the key points of the notes section but DO NOT simply repeat the notes. All bullets should capture the same meaning of the key points while saying it in a unique way. For your context, here is the slide title" + title_completion['choices'][0]['message']['content'] + " and subtitle: " + subtitle_completion['choices'][0]['message']['content'] +" here are my notes: " + paragraph.strip() + " Please do not use any colons!"})
+            content_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)            
+            
+            #remove quotation marks from all the completions
+            title_completion = title_completion['choices'][0]['message']['content'].replace('"', '')
+            subtitle_completion = subtitle_completion['choices'][0]['message']['content'].replace('"', '')
+            content_completion = content_completion['choices'][0]['message']['content'].replace('"', '')
+
+            # if a colon exists, remove everything to the left of a colon in the title and subtitle
+            if ":" in title_completion:
+                title_completion = title_completion.split(":")[1]
+            if ":" in subtitle_completion:
+                subtitle_completion = subtitle_completion.split(":")[-1]
+
             data.append({
-                'title': title_completion['choices'][0]['message']['content'].replace('"', ''),
-                'subtitle': subtitle_completion['choices'][0]['message']['content'].replace('"', ''),
-                'content': content_completion['choices'][0]['message']['content'].replace('- ', ''),
+                'title': title_completion,
+                'subtitle': subtitle_completion,
+                'content': content_completion,
                 'notes': paragraph.strip()
             })  # Create a dictionary entry for each paragraph
+
+            #emtpy the messages list
+            messages = []
 
     with open(output_file, 'w') as file:
         json.dump(data, file, indent=4)  # Write data to JSON file
