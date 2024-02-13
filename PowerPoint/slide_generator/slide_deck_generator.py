@@ -72,5 +72,7 @@ for i in range(len(content)):
         notes_slide = slide.notes_slide
         notes_slide.notes_text_frame.text = content[i]['notes']
 
+del presentation.slides[0]
+
 # Save the presentation
 presentation.save("generated_presentation.pptx")

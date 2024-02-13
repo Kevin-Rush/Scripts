@@ -42,10 +42,10 @@ def convert_to_json(input_file, output_file, api_key):
                 "notes": ""
             })
         else:
-            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? Please make it 3 - 5 words long, and please do NOT use any colons!"+paragraph.strip()})
+            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? For example, if the script is talking about what is going to be discussed during the presentation, a title like Agenda is perfectly acceptable. However, if one word will not suffice, please make it 3 - 5 words long, and please do NOT use any colons! Here is the script: "+paragraph.strip()})
             title_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
             
-            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a subtitle for this slide? Please make it 3 - 5 words long, and please do not use any colons!" + paragraph.strip() + " Please make the subtitle informative but different from the title." + title_completion['choices'][0]['message']['content']})
+            messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a subtitle for this slide? Please make it 3 - 5 words long, and please do not use any colons!" + paragraph.strip() + " Please make the subtitle expand on the title but does not repeat the title given here:" + title_completion['choices'][0]['message']['content']})
             subtitle_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
 
             messages.append({"role": "user", "content": "Hello, can you summarize my notes from this slide in bullet points? Please try to capture the key points of the notes section but DO NOT simply repeat the notes. All bullets should capture the same meaning of the key points while saying it in a unique way. For your context, here is the slide title" + title_completion['choices'][0]['message']['content'] + " and subtitle: " + subtitle_completion['choices'][0]['message']['content'] +" here are my notes: " + paragraph.strip() + " Please do not use any colons!"})
@@ -55,12 +55,13 @@ def convert_to_json(input_file, output_file, api_key):
             title_completion = title_completion['choices'][0]['message']['content'].replace('"', '')
             subtitle_completion = subtitle_completion['choices'][0]['message']['content'].replace('"', '')
             content_completion = content_completion['choices'][0]['message']['content'].replace('"', '')
+            content_completion = content_completion.replace('- ', '')
 
             # if a colon exists, remove everything to the left of a colon in the title and subtitle
             if ":" in title_completion:
-                title_completion = title_completion.split(":")[1]
+                title_completion = title_completion.split(": ")[-1]
             if ":" in subtitle_completion:
-                subtitle_completion = subtitle_completion.split(":")[-1]
+                subtitle_completion = subtitle_completion.split(": ")[-1]
 
             data.append({
                 'title': title_completion,
