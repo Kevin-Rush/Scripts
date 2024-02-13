@@ -1,12 +1,39 @@
 import json
 
 def convert_to_json(input_file, output_file):
+
     with open(input_file, 'r') as file:
         paragraphs = file.read().split('\n\n')  # Split text into paragraphs
 
     data = []
     for paragraph in paragraphs:
-        data.append({'paragraph': paragraph.strip()})  # Create a dictionary entry for each paragraph
+        #if data is empty, add the title
+        if not data:
+            data.append({
+                'title': 'DECK TITLE',
+                'subtitle': '',
+                'content': '',
+                'notes': paragraph.strip()
+            })
+            data.append({
+                "title": "LEGAL",
+                "subtitle": "",
+                "content": "",
+                "notes": ""
+            })
+            data.append({
+                "title": "RECAP",
+                "subtitle": "",
+                "content": "",
+                "notes": ""
+            })
+        else:
+            data.append({
+                'title': '',
+                'subtitle': '',
+                'content': paragraph.strip(),
+                'notes': ''
+            })  # Create a dictionary entry for each paragraph
 
     with open(output_file, 'w') as file:
         json.dump(data, file, indent=4)  # Write data to JSON file
