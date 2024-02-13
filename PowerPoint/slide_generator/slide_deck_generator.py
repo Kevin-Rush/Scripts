@@ -3,13 +3,11 @@ import json
 
 # Create a presentation object
 presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\base_presentation.pptx")
-json_file = (r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\sip_script.json")
+json_file = (r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\SIP_script.json")
 
 #read in the script from the json file
 with open(json_file, 'r') as file:
     content = json.load(file)
-
-content = content["slides"]
 
 for i in range(len(content)):
 
