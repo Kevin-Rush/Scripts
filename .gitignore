@@ -4,6 +4,6 @@
 *.pdf
 *.pptx
 ppxt_images/
-script.txt
+*script.txt
 *script.json
 __pycache__/
