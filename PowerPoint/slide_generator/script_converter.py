@@ -4,7 +4,6 @@ import openai
 def convert_to_json(input_file, output_file, api_key):
 
     openai.api_key = api_key
-    
 
     with open(input_file, 'r') as file:
         paragraphs = file.read().split('\n\n')  # Split text into paragraphs
@@ -75,12 +74,3 @@ def convert_to_json(input_file, output_file, api_key):
 
     with open(output_file, 'w') as file:
         json.dump(data, file, indent=4)  # Write data to JSON file
-
-# Usage example
-input_file = r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\scripts\SIP_script.txt'
-output_file = r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\SIP_script.json'
-
-with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
-    api_key = file.read()
-
-convert_to_json(input_file, output_file, api_key)

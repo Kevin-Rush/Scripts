@@ -1,78 +1,76 @@
 from pptx import Presentation
 import json
 
-# Create a presentation object
-presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\base_presentation.pptx")
-json_file = (r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\SIP_script.json")
+def generate_presentation(json_script, base_ppxt):
+    #Create a presentation object
+    presentation = Presentation(base_ppxt)
 
-#read in the script from the json file
-with open(json_file, 'r') as file:
-    content = json.load(file)
+    #read in the script from the json file
+    with open(json_script, 'r') as file:
+        content = json.load(file)
 
-for i in range(len(content)):
+    for i in range(len(content)):
 
-    if content[i]['title'] == "DECK TITLE":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[0])
-        title = slide.shapes.title
-        title.text = content[i]['content']
+        if content[i]['title'] == "DECK TITLE":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[0])
+            title = slide.shapes.title
+            title.text = content[i]['content']
 
-        notes_slide = slide.notes_slide
-        notes_slide.notes_text_frame.text = content[i]['notes']
+            notes_slide = slide.notes_slide
+            notes_slide.notes_text_frame.text = content[i]['notes']
+            
+        elif content[i]['title'] == "Agenda" or content[i]['title'] == "Discussion" or content[i]['title'] == "Review of Last Week" or content[i]['title'] == "Key Takeaways":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[3])
+            title = slide.shapes.title
+            title.text = content[i]['title']
+
+            slide_content = slide.shapes[1]
+            slide_content.text = content[i]['content']
+
+            notes_slide = slide.notes_slide
+            notes_slide.notes_text_frame.text = content[i]['notes']
+            
+        elif content[i]['title'] == "TRANSITION":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[6])
+
+            slide_content = slide.shapes[0]
+            slide_content.text = content[i]['content']
+
+            notes_slide = slide.notes_slide
+            notes_slide.notes_text_frame.text = content[i]['notes']
+
+        elif content[i]['title'] == "RECAP":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[2])
         
-    elif content[i]['title'] == "Agenda" or content[i]['title'] == "Discussion" or content[i]['title'] == "Review of Last Week" or content[i]['title'] == "Key Takeaways":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[3])
-        title = slide.shapes.title
-        title.text = content[i]['title']
+        elif content[i]['title'] == "LEGAL":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[1])
 
-        slide_content = slide.shapes[1]
-        slide_content.text = content[i]['content']
+        elif content[i]['title'] == "Activity":
+            slide = presentation.slides.add_slide(presentation.slide_layouts[5])
+            title = slide.shapes.title
+            title.text = content[i]['title']
 
-        notes_slide = slide.notes_slide
-        notes_slide.notes_text_frame.text = content[i]['notes']
-        
-    elif content[i]['title'] == "TRANSITION":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[6])
+            slide_subtitle = slide.shapes[1]
+            slide_subtitle.text = content[i]['subtitle']
 
-        slide_content = slide.shapes[0]
-        slide_content.text = content[i]['content']
+            slide_content = slide.shapes[2]
+            slide_content.text = content[i]['content']
 
-        notes_slide = slide.notes_slide
-        notes_slide.notes_text_frame.text = content[i]['notes']
+            notes_slide = slide.notes_slide
+            notes_slide.notes_text_frame.text = content[i]['notes']
+        else:   
+            slide = presentation.slides.add_slide(presentation.slide_layouts[4])
+            title = slide.shapes.title
+            title.text = content[i]['title']
 
-    elif content[i]['title'] == "RECAP":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[2])
-    
-    elif content[i]['title'] == "LEGAL":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[1])
+            slide_subtitle = slide.shapes[1]
+            slide_subtitle.text = content[i]['subtitle']
 
-    elif content[i]['title'] == "Activity":
-        slide = presentation.slides.add_slide(presentation.slide_layouts[5])
-        title = slide.shapes.title
-        title.text = content[i]['title']
+            slide_content = slide.shapes[2]
+            slide_content.text = content[i]['content']
 
-        slide_subtitle = slide.shapes[1]
-        slide_subtitle.text = content[i]['subtitle']
+            notes_slide = slide.notes_slide
+            notes_slide.notes_text_frame.text = content[i]['notes']
 
-        slide_content = slide.shapes[2]
-        slide_content.text = content[i]['content']
-
-        notes_slide = slide.notes_slide
-        notes_slide.notes_text_frame.text = content[i]['notes']
-    else:   
-        slide = presentation.slides.add_slide(presentation.slide_layouts[4])
-        title = slide.shapes.title
-        title.text = content[i]['title']
-
-        slide_subtitle = slide.shapes[1]
-        slide_subtitle.text = content[i]['subtitle']
-
-        slide_content = slide.shapes[2]
-        slide_content.text = content[i]['content']
-
-        notes_slide = slide.notes_slide
-        notes_slide.notes_text_frame.text = content[i]['notes']
-
-del presentation.slides[0]
-
-# Save the presentation
-presentation.save("generated_presentation.pptx")
+    # Save the presentation
+    presentation.save("generated_presentation.pptx")
