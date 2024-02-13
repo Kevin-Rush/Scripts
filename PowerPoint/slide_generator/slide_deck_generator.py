@@ -2,8 +2,8 @@ from pptx import Presentation
 import json
 
 # Create a presentation object
-presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\base_presentation.pptx")
-json_file = r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\example_presentation_script.json"
+presentation = Presentation(r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\base_presentation.pptx")
+json_file = (r"C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\sip_script.json")
 
 #read in the script from the json file
 with open(json_file, 'r') as file:

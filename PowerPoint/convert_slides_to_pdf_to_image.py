@@ -32,7 +32,10 @@ def pdf_to_images(pdf_file, output_folder):
             # Save the image with a unique filename
             base_filename = "slide"
             extension = ".jpg"
-            rgb_img.save(output_folder + base_filename + "_" + str(i+1) + extension, "JPEG")
+            if i < 10:
+                rgb_img.save(output_folder + base_filename + "_0" + str(i+1) + extension, "JPEG")
+            else:
+                rgb_img.save(output_folder + base_filename + "_" + str(i+1) + extension, "JPEG")
 
 
 def run(ppxt_file, root):

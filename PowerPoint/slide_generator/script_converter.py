@@ -12,6 +12,6 @@ def convert_to_json(input_file, output_file):
         json.dump(data, file, indent=4)  # Write data to JSON file
 
 # Usage example
-input_file = '/path/to/raw_text.txt'
-output_file = '/path/to/output.json'
+input_file = r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\scripts\SIP_script.txt'
+output_file = r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\slide_generator\json_scripts\SIP_script.json'
 convert_to_json(input_file, output_file)

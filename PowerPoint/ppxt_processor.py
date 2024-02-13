@@ -14,11 +14,12 @@ def process_ppxt(ppxt_filepath):
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
                 break
+        
+        slide_text = ""
+        notes_text = ""
 
         if "agenda" in title.lower() or "discussion" in title.lower() or "activity" in title.lower():
-            
-            # Accessing text within the slide
-            slide_text = ""
+            # Accessing the text within the slide
             for shape in slide.shapes:
                 if shape.has_text_frame:
                     for paragraph in shape.text_frame.paragraphs:
@@ -32,19 +33,18 @@ def process_ppxt(ppxt_filepath):
                                 for run in paragraph.runs:
                                     slide_text += run.text + "\n"
 
-            # Accessing notes within the slide
-            notes_text = ""
+            # Accessing the notes within the slide
             if slide.has_notes_slide:
                 notes_slide = slide.notes_slide
                 for paragraph in notes_slide.notes_text_frame.paragraphs:
                     notes_text += paragraph.text
 
 
-            #add slide 
-            df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
+        #add slide 
+        df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
 
     return df     
         
 
 def run(ppxt_file):
-    return evaluate_ppxt(ppxt_file)
+    return process_ppxt(ppxt_file)

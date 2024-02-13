@@ -8,15 +8,18 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def run(output_folder, api_key):
+def run(image_folder, api_key):
     openai.api_key = api_key
     # Get a list of the image files
-    image_files = os.listdir(output_folder)
-
+    image_files = os.listdir(image_folder)
+    responses = []
+    print(image_files)
     # Iterate over the image files
+    
     for image_file in image_files:
+        print(image_file)
         # Full path to the image file
-        image_path = os.path.join(output_folder, image_file)
+        image_path = os.path.join(image_folder, image_file)
         base64_image = encode_image(image_path)
 
         headers = {
@@ -32,7 +35,7 @@ def run(output_folder, api_key):
             "content": [
                 {
                 "type": "text",
-                "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing. For visual appeal, I want you to tell me if the information on the slide is presented in an effective way. Ensure that you say 1 good thing about the slide, but then provide specific and actionable feedback. Please only consider the text I've given, do not think beyond the slide."
+                "text": "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing (extravegant phrasing includes but is not restricted to: 'delve', 'utilize', 'the art and science of', 'enter the world of', etc.). For visual appeal, I want you to tell me if the information on the slide is presented in an effective way. Ensure that you say 1 good thing about the slide, and then provide 3 specific and actionable pieces feedback. Keep responses short and direct yet professional and only consider the text I've given, do not think beyond the slide."
                 },
                 {
                 "type": "image_url",
@@ -53,3 +56,8 @@ def run(output_folder, api_key):
         response = response['choices'][0]['message']['content']
         print(response)
         print("Tokesn used: ", tokens)
+
+        #save the response in a list
+        responses.append(response)
+        
+    return responses
