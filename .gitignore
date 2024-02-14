@@ -7,3 +7,4 @@ ppxt_images/
 *script.txt
 *script.json
 __pycache__/
+*.png
