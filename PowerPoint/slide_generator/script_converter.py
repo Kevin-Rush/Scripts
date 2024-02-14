@@ -17,7 +17,7 @@ def convert_to_json(input_file, output_file, api_key):
         if not data:
             messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? Please make it 3 - 5 words long, and please do not use any colons!"+paragraph.strip()})
             title_completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=messages,
             max_tokens=200
             )
@@ -42,13 +42,13 @@ def convert_to_json(input_file, output_file, api_key):
             })
         else:
             messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? For example, if the script is talking about what is going to be discussed during the presentation, a title like Agenda is perfectly acceptable. However, if one word will not suffice, please make it 3 - 5 words long, and please do NOT use any colons! Here is the script: "+paragraph.strip()})
-            title_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
+            title_completion = openai.ChatCompletion.create(model="gpt-4", messages=messages, max_tokens=200)
             
             messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a subtitle for this slide? Please make it 3 - 5 words long, and please do not use any colons!" + paragraph.strip() + " Please make the subtitle expand on the title but does not repeat the title given here:" + title_completion['choices'][0]['message']['content']})
-            subtitle_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages, max_tokens=200)
+            subtitle_completion = openai.ChatCompletion.create(model="gpt-4", messages=messages, max_tokens=200)
 
             messages.append({"role": "user", "content": "Hello, can you summarize my notes from this slide in bullet points? Please try to capture the key points of the notes section but DO NOT simply repeat the notes. All bullets should capture the same meaning of the key points while saying it in a unique way. For your context, here is the slide title" + title_completion['choices'][0]['message']['content'] + " and subtitle: " + subtitle_completion['choices'][0]['message']['content'] +" here are my notes: " + paragraph.strip() + " Please do not use any colons!"})
-            content_completion = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)            
+            content_completion = openai.ChatCompletion.create(model="gpt-4", messages=messages)            
             
             #remove quotation marks from all the completions
             title_completion = title_completion['choices'][0]['message']['content'].replace('"', '')
