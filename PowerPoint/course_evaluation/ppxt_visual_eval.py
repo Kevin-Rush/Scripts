@@ -5,10 +5,12 @@ import openai
 
 # Function to encode the image
 def encode_image(image_path):
+    #This function encodes the image to base64
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 def run(image_folder, api_key):
+    # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
     openai.api_key = api_key
     # Get a list of the image files
     image_files = os.listdir(image_folder)

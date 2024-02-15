@@ -1,7 +1,9 @@
 from pptx import Presentation
 import pandas as pd
 
-def process_ppxt(ppxt_filepath):
+def process(ppxt_filepath):
+    #this function processes a PowerPoint file and returns a dataframe with the slide number, title, slide text, and notes text
+
     presentation = Presentation(ppxt_filepath)
 
     #create an empty dataframe

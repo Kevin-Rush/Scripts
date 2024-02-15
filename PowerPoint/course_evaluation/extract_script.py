@@ -1,6 +1,7 @@
 from pptx import Presentation
 
 def extract_script(ppxt_file, output_file):
+    #this function extracts the speaker notes from a PowerPoint file and saves them to a text file
     presentation = Presentation(ppxt_file)
     script = ""
 
@@ -24,7 +25,3 @@ def extract_script(ppxt_file, output_file):
 
     with open(output_file, "w", encoding='utf-8') as file:
         file.write(script)
-
-ppxt_file = "C:/Users/kevin/Downloads/Intel AI for Workforce TTT AEAI.pptx"
-output_file = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/output_extract_script.txt"
-extract_script(ppxt_file, output_file)
