@@ -29,11 +29,10 @@ def pdf_to_images(pdf_file, output_folder):
         img.compression_quality = 99
         # Iterate over each page in the PDF
         for i, page in enumerate(img.sequence):
-            
+            print(" Processing page: ", i+1, " of ", len(img.sequence))
             percentage = int((i / len(img.sequence)) * 100)
-            loading_bar = '#' * (percentage // 2) + '-' * (50 - percentage // 2)
-            print(f"\r[{loading_bar}] {percentage}%", end='')
-            print()
+            loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
+            print(f"\r[{loading_bar}] {percentage + 4}%", end='')
 
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))
@@ -49,11 +48,13 @@ def pdf_to_images(pdf_file, output_folder):
                 rgb_img.save(output_folder + base_filename + "_0" + str(i+1) + extension, "JPEG")
             else:
                 rgb_img.save(output_folder + base_filename + "_" + str(i+1) + extension, "JPEG")
+        
+    print()
 
 
 def run(ppxt_file, root):
     # Convert ppxt to PDF to images
-    print(f"---------------------Convert to PDF---------------------{Fore.RESET}")
+    print(f"{Fore.YELLOW}---------------------Convert to PDF---------------------{Fore.RESET}")
     ppxt_to_pdf(ppxt_file, root)
     print(f"{Fore.YELLOW}---------------------Save Images---------------------{Fore.RESET}")
 

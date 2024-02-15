@@ -11,7 +11,7 @@ def convert_to_json(input_file, output_file, api_key):
     data = []
     for paragraph in paragraphs:
         messages=[
-        {"role": "system", "content": "You are a helpful slide deck writing that is helping me write a presentation. I will ask you to help me with various tasks such as summarizing a paragraph, generating short and informative titles, writing a conclusion, etc. Please always give the most pithy and direct wording possible without loosing the key information from the text! Berevity and accuracy are key! Please avoid words like utilize or delve or fancy language like exploring the world, mastering the art and science, etc. Additionally, never use colons. Thank you!"}
+        {"role": "system", "content": "You are an extremely professional academic expert slide deck writer that I have hired to help me write a presentation. I will ask you to help me with various tasks such as summarizing a paragraph, generating short and informative titles, writing a conclusion, etc. Please always give the most pithy and direct wording possible without loosing the key information from the text! Berevity and accuracy are key! Please avoid words like utilize or delve or fancy language like exploring the world, mastering the art and science, etc. Additionally, never use colons. Thank you!"}
         ]
         #if data is empty, add the title
         if not data:
@@ -28,18 +28,18 @@ def convert_to_json(input_file, output_file, api_key):
                 'content': title_completion['choices'][0]['message']['content'].replace('"', ''), #note, the title entry in JSON is special because the content is the title of the slide and the title key is used as a key in the slide_deck_generator.py file
                 'notes': paragraph.strip()
             })
-            data.append({
-                "title": "LEGAL",
-                "subtitle": "",
-                "content": "",
-                "notes": ""
-            })
-            data.append({
-                "title": "RECAP",
-                "subtitle": "",
-                "content": "",
-                "notes": ""
-            })
+            # data.append({
+            #     "title": "LEGAL",
+            #     "subtitle": "",
+            #     "content": "",
+            #     "notes": ""
+            # })
+            # data.append({
+            #     "title": "RECAP",
+            #     "subtitle": "",
+            #     "content": "",
+            #     "notes": ""
+            # })
         else:
             messages.append({"role": "user", "content": "Hello, can you please capture the essence of my slide script to generate a title for this slide? For example, if the script is talking about what is going to be discussed during the presentation, a title like Agenda is perfectly acceptable. However, if one word will not suffice, please make it 3 - 5 words long, and please do NOT use any colons! Here is the script: "+paragraph.strip()})
             title_completion = openai.ChatCompletion.create(model="gpt-4", messages=messages, max_tokens=200)

@@ -23,6 +23,12 @@ def process(ppxt_filepath):
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
 
+            #if there is a text box, save the text to subtitle
+            if shape.shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
+                if "https://www" not in shape.text: #verify it's not an image reference
+                    if shape.text.strip() != subtitle.strip():
+                        subtitle = shape.text
+
             # Accessing the text within the slide
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
@@ -31,11 +37,7 @@ def process(ppxt_filepath):
                         if paragraph_text.strip() != subtitle.strip():
                             if "image source:" not in paragraph_text.lower():
                                 slide_text += paragraph_text + "\n"
-            #if there is a text box, save the text to subtitle
-            if shape.shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
-                if "https://www" not in shape.text: #verify it's not an image reference
-                    if shape.text.strip() != subtitle.strip():
-                        subtitle = shape.text
+            
 
             # Accessing the notes within the slide
             if notes_text == "" and slide.has_notes_slide:
@@ -55,7 +57,6 @@ def process(ppxt_filepath):
                 slide_type = "Transition"
             else:
                 slide_type = "Content"
-
         #add slide 
         df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
 

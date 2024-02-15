@@ -1,5 +1,6 @@
 from colorama import Fore
 from openai import OpenAI
+import ppxt_visual_eval
 
 def evaluate(df, api_key):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
@@ -26,7 +27,7 @@ def evaluate(df, api_key):
         ]
         
         slide_type = row['Slide Type']
-
+        
         # Make different calls to chatgpt based on slide_type
         if slide_type == 'Title':
             messages_highview.append({"role": "user", "content": "Hello, can you tell me if this is a good slide title? If it's good, say 'It's good' and nothing else, but if it's bad, tell me why and give me an alternative title around the same length if not shorter. Slide Title: " + row['Title']})
@@ -35,6 +36,7 @@ def evaluate(df, api_key):
                 messages=messages_highview,
             )
             messages_highview.pop()
+            response = response.choices[0].message.content
         
         elif slide_type == 'Agenda':
             messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my agenda slide? Let me know what you think about: 1) The overall flow 2) The naming of the specific sections Slide. Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text'] + "If it's"})
@@ -43,6 +45,7 @@ def evaluate(df, api_key):
                 messages=messages_highview,
             )
             messages_highview.pop()
+            response = response.choices[0].message.content
         
         elif slide_type == 'Transition':
             messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my transition slide? If it's good, say 'It's good' and nothing else, but if it's bad, tell me why and give me an alternative transition around the same length if not shorter. Slide Contents: " + row['Slide Text']})
@@ -51,6 +54,7 @@ def evaluate(df, api_key):
                 messages=messages_highview,
             )
             messages_highview.pop()
+            response = response.choices[0].message.content
         
         elif slide_type == 'Discussion':
             messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my discussion questions? If they're good, say 'They're good' and nothing else, but if they're bad, tell me why and give me some alternatives. Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
@@ -59,6 +63,7 @@ def evaluate(df, api_key):
                 messages=messages_activity,
             )
             messages_activity.pop()
+            response = response.choices[0].message.content
         
         elif slide_type == 'Activity':
             messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my activity questions? Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
@@ -67,7 +72,13 @@ def evaluate(df, api_key):
                 messages=messages_activity,
             )
             messages_activity.pop()
+            response = response.choices[0].message.content
         
+        elif slide_type == 'Content' and row['Slide Text'] == "":
+            if i < 9:
+                response = ppxt_visual_eval.run(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\course_evaluation\ppxt_images\slide_0'+str(i+1)+'.jpg', api_key)
+            else: 
+                response = ppxt_visual_eval.run(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\course_evaluation\ppxt_images\slide_'+str(i+1)+'.jpg', api_key)
         else:
             messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
             response = client.chat.completions.create(
@@ -75,20 +86,24 @@ def evaluate(df, api_key):
                 messages=messages_lowview,
             )
             messages_lowview.pop()
+            response = response.choices[0].message.content
 
-        response = response.choices[0].message.content
+        
 
         if i == 3:
-            print(f"{Fore.YELLOW}---------------------------------Example Evaluation---------------------------------{Fore.RESET}")
+            print(f"{Fore.YELLOW}\n---------------------------------Example Evaluation---------------------------------{Fore.RESET}")
             print(response)
             print()
         
+
+
+
         #add the response to the column 'Response' in the df
         df.at[i, 'Response'] = response
 
         percentage = int((i / len(df)) * 100)
-        loading_bar = '#' * (percentage // 2) + '-' * (50 - percentage // 2)
-        print(f"\r[{loading_bar}] {percentage}%", end='')
-        print()
-    
+        loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
+        print(f"\r[{loading_bar}] {percentage + 4}%", end='')
+    print()
+
     return df

@@ -5,13 +5,12 @@ import ppxt_written_eval
 from extract_script import extract_script
 import glob
 from colorama import Fore, Style
+import os
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
     api_key = file.read()
 
 ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Slides_Week_5_GAI.pptx')
-# print("ppxt_file_glob: ", ppxt_file_glob)
-# print("ppxt_file_glob[0]: ", ppxt_file_glob[0])
 
 #ppxt_file = "Slides_Week_5_GAI.pptx"
 output_file = "extracted_script.txt"
@@ -30,14 +29,17 @@ print(f"{Fore.GREEN}---------------------Conversion Successful------------------
 
 print(f"{Fore.YELLOW}---------------------Evaluate the Deck---------------------{Fore.RESET}")
 df = ppxt_written_eval.evaluate(df, api_key)
-print(f"{Fore.GREEN}---------------------Conversion Successful---------------------{Fore.RESET}")
+print(f"{Fore.GREEN}---------------------Evaluation Successful---------------------{Fore.RESET}")
 
-#use chatgpt to do a visual evaluation of all the slides
-#responses = ppxt_visual_eval.run(root + "ppxt_images/", api_key)
+#run through all the images in the folder ppxt_images and delete them
+print(f"{Fore.YELLOW}---------------------Remove Images---------------------{Fore.RESET}")
 
-# #run through the list responses and add them to the dataframe
-# for i, response in enumerate(responses):
-#     df.at[i, 'Response'] = response
+dir_path = "ppxt_images/"
+img_files = glob.glob(os.path.join(dir_path, "*"))
+for img_file in img_files:
+    os.remove(img_file)
+
+print(f"{Fore.GREEN}---------------------Images Removed---------------------{Fore.RESET}")
 
 #save the dataframe to a csv
 df.to_csv(root + "ppxt_eval.csv", index=False)
