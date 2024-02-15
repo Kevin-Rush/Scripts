@@ -28,8 +28,9 @@ print(f"{Fore.YELLOW}---------------------Converter Deck to Images--------------
 #convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 print(f"{Fore.GREEN}---------------------Conversion Successful---------------------{Fore.RESET}")
 
-print(f"{Fore.YELLOW}---------------------Evaluate the Deck---------------------")
-df = ppxt_written_eval.evaluate(df, api_key)
+print(f"{Fore.YELLOW}---------------------Evaluate the Deck---------------------{Fore.RESET}")
+#df = ppxt_written_eval.evaluate(df, api_key)
+print(f"{Fore.GREEN}---------------------Conversion Successful---------------------{Fore.RESET}")
 
 #use chatgpt to do a visual evaluation of all the slides
 #responses = ppxt_visual_eval.run(root + "ppxt_images/", api_key)
@@ -40,3 +41,4 @@ df = ppxt_written_eval.evaluate(df, api_key)
 
 #save the dataframe to a csv
 df.to_csv(root + "ppxt_eval.csv", index=False)
+print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")

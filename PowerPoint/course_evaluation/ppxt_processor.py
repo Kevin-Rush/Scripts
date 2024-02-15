@@ -22,28 +22,23 @@ def process(ppxt_filepath):
         for shape in slide.shapes:
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
-            
-            if shape.is_placeholder and shape.placeholder_format.idx == 17:  # idx 1 is the subtitle placeholder
-                print("-"*20)
-            
-
-            #if there is a text box, save the text to subtitle
-            if shape.shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
-                if "https://www" not in shape.text: #verify it's not an image reference
-                    subtitle = shape.text
 
             # Accessing the text within the slide
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
                     paragraph_text = "".join(run.text for run in paragraph.runs)
                     if paragraph_text.strip() and paragraph_text != title:  # Check if the paragraph text is not empty
-                        slide_text += paragraph_text + "\n"
-
-            if slide_text.strip() == subtitle.strip():
-                subtitle = "No Subtitle"
+                        if paragraph_text.strip() != subtitle.strip():
+                            if "image source:" not in paragraph_text.lower():
+                                slide_text += paragraph_text + "\n"
+            #if there is a text box, save the text to subtitle
+            if shape.shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
+                if "https://www" not in shape.text: #verify it's not an image reference
+                    if shape.text.strip() != subtitle.strip():
+                        subtitle = shape.text
 
             # Accessing the notes within the slide
-            if slide.has_notes_slide:
+            if notes_text == "" and slide.has_notes_slide:
                 notes_slide = slide.notes_slide
                 for paragraph in notes_slide.notes_text_frame.paragraphs:
                     notes_text += paragraph.text
