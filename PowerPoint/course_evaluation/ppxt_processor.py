@@ -53,8 +53,4 @@ def process(ppxt_filepath):
         #add slide 
         df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Type': slide_type, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
 
-    return df     
-        
-
-def run(ppxt_file):
-    return process_ppxt(ppxt_file)
+    return df
