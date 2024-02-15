@@ -1,22 +1,27 @@
 import os
 import glob
+from colorama import Fore
 import win32com.client
 from wand.image import Image
 from PIL import Image as PilImage
 import numpy as np
 
-def ppxt_to_pdf(files, formatType = 32):
+def ppxt_to_pdf(files, root, formatType = 32):
     # Convert ppxt to PDF using win32com
-    print("files: ", files)
+    print("File: ", files)
     powerpoint = win32com.client.Dispatch("Powerpoint.Application")
     powerpoint.Visible = 1
+
     for filename in files:
-        print("filename: ", filename)
+        print("Filename: ", filename)
         newname = os.path.splitext(filename)[0] + ".pdf"
+        print("Newname: ", newname)
         deck = powerpoint.Presentations.Open(filename)
         deck.SaveAs(newname, formatType)
         deck.Close()
     powerpoint.Quit()
+
+    print("File converted to PDF")
 
 
 def pdf_to_images(pdf_file, output_folder):
@@ -35,7 +40,7 @@ def pdf_to_images(pdf_file, output_folder):
             # Save the image with a unique filename
             base_filename = "slide"
             extension = ".jpg"
-            if i < 10:
+            if i < 9:
                 rgb_img.save(output_folder + base_filename + "_0" + str(i+1) + extension, "JPEG")
             else:
                 rgb_img.save(output_folder + base_filename + "_" + str(i+1) + extension, "JPEG")
@@ -43,14 +48,12 @@ def pdf_to_images(pdf_file, output_folder):
 
 def run(ppxt_file, root):
     # Convert ppxt to PDF to images
-    print("---------------------Convert to PDF---------------------")
-    ppxt_to_pdf(ppxt_file)
-    print("---------------------Convert to Images---------------------")
+    print(f"---------------------Convert to PDF---------------------{Fore.RESET}")
+    ppxt_to_pdf(ppxt_file, root)
+    print(f"{Fore.YELLOW}---------------------Save Images---------------------")
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
 
-    pdf_file = root + "test_file.pdf"
-
+    pdf_file = r"C:\Users\kevin\Downloads\Slides_Week_5_GAI.pdf"
     output_folder = root + "ppxt_images/"
-
     pdf_to_images(pdf_file, output_folder)
