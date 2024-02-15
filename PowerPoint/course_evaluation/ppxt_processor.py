@@ -7,7 +7,7 @@ def process(ppxt_filepath):
     presentation = Presentation(ppxt_filepath)
 
     #create an empty dataframe
-    df = pd.DataFrame(columns=['Slide Number', 'Title', 'Slide Text', 'Notes Text'])
+    df = pd.DataFrame(columns=['Slide Number', 'Title', 'Slide Type', 'Slide Text', 'Notes Text'])
 
     for i, slide in enumerate(presentation.slides, start=1):
         slide_number = i
@@ -17,8 +17,10 @@ def process(ppxt_filepath):
                 title = shape.text
                 break
         
-        slide_text = ""
-        notes_text = ""
+        slide_type = "No Type"
+        subtitle = "No Subtitle"
+        slide_text = "No Content"
+        notes_text = "No Notes"
 
         if "agenda" in title.lower() or "discussion" in title.lower() or "activity" in title.lower():
             # Accessing the text within the slide
@@ -34,6 +36,12 @@ def process(ppxt_filepath):
                             for paragraph in cell.text_frame.paragraphs:
                                 for run in paragraph.runs:
                                     slide_text += run.text + "\n"
+            if "agenda" in title.lower():
+                slide_type = "Agenda"
+            elif "discussion" in title.lower():
+                slide_type = "Discussion"
+            elif "activity" in title.lower():
+                slide_type = "Activity"
 
             # Accessing the notes within the slide
             if slide.has_notes_slide:
@@ -43,7 +51,7 @@ def process(ppxt_filepath):
 
 
         #add slide 
-        df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
+        df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Type': slide_type, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
 
     return df     
         
