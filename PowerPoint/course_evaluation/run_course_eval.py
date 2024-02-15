@@ -17,16 +17,15 @@ root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
 
 df = ppxt_processor.process(ppxt_file)
 
-# for i in range(len(df)):
-#     print("Slide Number: " + str(df["Slide Number"][i]) + " Type: " + df["Slide Type"][i])
+print("---------------------Call Converter---------------------")
+convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 
-#print("---------------------Call Converter---------------------")
-#convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
+#use chatgpt to do a visual evaluation of all the slides
 #responses = ppxt_visual_eval.run(root + "ppxt_images/", api_key)
 
 # #run through the list responses and add them to the dataframe
 # for i, response in enumerate(responses):
 #     df.at[i, 'Response'] = response
 
-# #save the dataframe to a csv
-# df.to_csv(root + "ppxt_eval.csv", index=False)
+#save the dataframe to a csv
+df.to_csv(root + "ppxt_eval.csv", index=False)
