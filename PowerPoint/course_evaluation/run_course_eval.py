@@ -16,9 +16,11 @@ output_file = "extracted_script.txt"
 root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
 
 df = ppxt_processor.process(ppxt_file)
-print(df)
 
-print("---------------------Call Converter---------------------")
+# for i in range(len(df)):
+#     print("Slide Number: " + str(df["Slide Number"][i]) + " Type: " + df["Slide Type"][i])
+
+#print("---------------------Call Converter---------------------")
 #convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 #responses = ppxt_visual_eval.run(root + "ppxt_images/", api_key)
 

@@ -1,4 +1,5 @@
 from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
 
 def process(ppxt_filepath):
@@ -7,41 +8,39 @@ def process(ppxt_filepath):
     presentation = Presentation(ppxt_filepath)
 
     #create an empty dataframe
-    df = pd.DataFrame(columns=['Slide Number', 'Title', 'Slide Type', 'Slide Text', 'Notes Text'])
+    df = pd.DataFrame(columns=['Slide Number', 'Slide Type', 'Title', 'Subtitle', 'Slide Text', 'Notes Text'])
 
     for i, slide in enumerate(presentation.slides, start=1):
         slide_number = i
+
+        slide_type = "No Type"
         title = "No Title"
+        subtitle = "No Subtitle"
+        slide_text = ""
+        notes_text = ""
+
         for shape in slide.shapes:
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
-                break
-        
-        slide_type = "No Type"
-        subtitle = "No Subtitle"
-        slide_text = "No Content"
-        notes_text = "No Notes"
+            
+            if shape.is_placeholder and shape.placeholder_format.idx == 17:  # idx 1 is the subtitle placeholder
+                print("-"*20)
+            
 
-        if "agenda" in title.lower() or "discussion" in title.lower() or "activity" in title.lower():
+            #if there is a text box, save the text to subtitle
+            if shape.shape_type == MSO_SHAPE_TYPE.TEXT_BOX:
+                if "https://www" not in shape.text: #verify it's not an image reference
+                    subtitle = shape.text
+
             # Accessing the text within the slide
-            for shape in slide.shapes:
-                if shape.has_text_frame:
-                    for paragraph in shape.text_frame.paragraphs:
-                        paragraph_text = "".join(run.text for run in paragraph.runs)
-                        if paragraph_text.strip():  # Check if the paragraph text is not empty
-                            slide_text += paragraph_text + "\n"
-                elif shape.has_table:
-                    for row in shape.table.rows:
-                        for cell in row.cells:
-                            for paragraph in cell.text_frame.paragraphs:
-                                for run in paragraph.runs:
-                                    slide_text += run.text + "\n"
-            if "agenda" in title.lower():
-                slide_type = "Agenda"
-            elif "discussion" in title.lower():
-                slide_type = "Discussion"
-            elif "activity" in title.lower():
-                slide_type = "Activity"
+            if shape.has_text_frame:
+                for paragraph in shape.text_frame.paragraphs:
+                    paragraph_text = "".join(run.text for run in paragraph.runs)
+                    if paragraph_text.strip() and paragraph_text != title:  # Check if the paragraph text is not empty
+                        slide_text += paragraph_text + "\n"
+
+            if slide_text.strip() == subtitle.strip():
+                subtitle = "No Subtitle"
 
             # Accessing the notes within the slide
             if slide.has_notes_slide:
@@ -49,8 +48,20 @@ def process(ppxt_filepath):
                 for paragraph in notes_slide.notes_text_frame.paragraphs:
                     notes_text += paragraph.text
 
+            if "agenda" in title.lower():
+                slide_type = "Agenda"
+            elif "discussion" in title.lower():
+                slide_type = "Discussion"
+            elif "activity" in title.lower():
+                slide_type = "Activity"
+            elif subtitle == "No Subtitle" and slide_text == "":
+                slide_type = "Title"
+            elif subtitle == "No Subtitle" and slide_text != "":
+                slide_type = "Transition"
+            else:
+                slide_type = "Content"
 
         #add slide 
-        df = df.append({'Slide Number': slide_number, 'Title': title, 'Slide Type': slide_type, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
+        df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
 
     return df
