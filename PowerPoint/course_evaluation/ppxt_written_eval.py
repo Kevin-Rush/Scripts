@@ -81,15 +81,14 @@ def evaluate(df, api_key):
         if i == 3:
             print(f"{Fore.YELLOW}---------------------------------Example Evaluation---------------------------------{Fore.RESET}")
             print(response)
+            print()
         
         #add the response to the column 'Response' in the df
         df.at[i, 'Response'] = response
 
-        #print a loading bar as the function runs
-        #print(f"Slide {i} completed")
-
         percentage = int((i / len(df)) * 100)
         loading_bar = '#' * (percentage // 2) + '-' * (50 - percentage // 2)
         print(f"\r[{loading_bar}] {percentage}%", end='')
+        print()
     
     return df

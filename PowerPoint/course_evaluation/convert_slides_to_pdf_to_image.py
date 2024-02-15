@@ -8,7 +8,6 @@ import numpy as np
 
 def ppxt_to_pdf(files, root, formatType = 32):
     # Convert ppxt to PDF using win32com
-    print("File: ", files)
     powerpoint = win32com.client.Dispatch("Powerpoint.Application")
     powerpoint.Visible = 1
 
@@ -30,6 +29,12 @@ def pdf_to_images(pdf_file, output_folder):
         img.compression_quality = 99
         # Iterate over each page in the PDF
         for i, page in enumerate(img.sequence):
+            
+            percentage = int((i / len(img.sequence)) * 100)
+            loading_bar = '#' * (percentage // 2) + '-' * (50 - percentage // 2)
+            print(f"\r[{loading_bar}] {percentage}%", end='')
+            print()
+
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))
             # Convert image to RGB mode
@@ -50,7 +55,7 @@ def run(ppxt_file, root):
     # Convert ppxt to PDF to images
     print(f"---------------------Convert to PDF---------------------{Fore.RESET}")
     ppxt_to_pdf(ppxt_file, root)
-    print(f"{Fore.YELLOW}---------------------Save Images---------------------")
+    print(f"{Fore.YELLOW}---------------------Save Images---------------------{Fore.RESET}")
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
 

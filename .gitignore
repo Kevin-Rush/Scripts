@@ -8,3 +8,4 @@ ppxt_images/
 *script.json
 __pycache__/
 *.png
+ppxt_eval.csv
