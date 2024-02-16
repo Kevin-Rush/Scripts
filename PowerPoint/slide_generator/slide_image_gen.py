@@ -15,13 +15,6 @@ def  gen_image_for_slide(json_script, presentation_file, api_key):
     #Create a presentation object
     presentation = Presentation(presentation_file)
 
-    #open the image test_img.png
-    image_filename = 'test_img.png'
-
-    #load the image
-    with open(image_filename, 'rb') as file:
-        image = file.read()
-
     #read in the script from the json file
     with open(json_script, 'r') as file:
         content = json.load(file)
