@@ -7,14 +7,16 @@ import glob
 from colorama import Fore, Style
 import os
 
-with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
+with open("", "r") as file: #enter the path to the gpt_key.txt file
     api_key = file.read()
 
-ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Slides_Week_5_GAI.pptx')
+#or hard code the api key
+#api_key = ""  
 
-#ppxt_file = "Slides_Week_5_GAI.pptx"
+ppxt_file_glob = glob.glob(r'') #enter the path to the ppxt file
+
 output_file = "extracted_script.txt"
-root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
+root = "" #enter the path to the root folder
 
 print(f"{Fore.RESET}Start")
 df = ppxt_processor.process(ppxt_file_glob[0])
@@ -40,6 +42,11 @@ for img_file in img_files:
     os.remove(img_file)
 
 print(f"{Fore.GREEN}---------------------Images Removed---------------------{Fore.RESET}")
+
+#add new columns to the dataframe
+df['Response'] = ""
+df['Visual Evaluation'] = ""
+
 
 #save the dataframe to a csv
 df.to_csv(root + "ppxt_eval.csv", index=False)

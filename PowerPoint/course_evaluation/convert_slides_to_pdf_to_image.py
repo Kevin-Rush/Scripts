@@ -60,6 +60,6 @@ def run(ppxt_file, root):
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
 
-    pdf_file = r"C:\Users\kevin\Downloads\Slides_Week_5_GAI.pdf"
+    pdf_file = r"" #enter the path to the pdf file
     output_folder = root + "ppxt_images/"
     pdf_to_images(pdf_file, output_folder)

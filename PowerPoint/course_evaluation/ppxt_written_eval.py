@@ -30,7 +30,7 @@ def evaluate(df, api_key):
         
         # Make different calls to chatgpt based on slide_type
         if slide_type == 'Title':
-            messages_highview.append({"role": "user", "content": "Hello, can you tell me if this is a good slide title? If it's good, say 'It's good' and nothing else, but if it's bad, tell me why and give me an alternative title around the same length if not shorter. Slide Title: " + row['Title']})
+            messages_highview.append({"role": "user", "content": "Hello, can you tell me if this is a good slide title? If it's good, say 'It's good' and nothing else, but if it's bad, tell me exactly why in one sentence and give me an alternative title around the same length if not shorter. Slide Title: " + row['Title']})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_highview,
@@ -48,7 +48,7 @@ def evaluate(df, api_key):
             response = response.choices[0].message.content
         
         elif slide_type == 'Transition':
-            messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my transition slide? If it's good, say 'It's good' and nothing else, but if it's bad, tell me why and give me an alternative transition around the same length if not shorter. Slide Contents: " + row['Slide Text']})
+            messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my transition slide? If it's good, say 'It's good' and nothing else, but if it's bad, tell me exactly why in one sentence and give me an alternative transition around the same length if not shorter. Slide Contents: " + row['Slide Text']})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_highview,
@@ -76,9 +76,9 @@ def evaluate(df, api_key):
         
         elif slide_type == 'Content' and row['Slide Text'] == "":
             if i < 9:
-                response = ppxt_visual_eval.run(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\course_evaluation\ppxt_images\slide_0'+str(i+1)+'.jpg', api_key)
+                response = ppxt_visual_eval.run(r'\ppxt_images\slide_0'+str(i+1)+'.jpg', api_key)
             else: 
-                response = ppxt_visual_eval.run(r'C:\Users\kevin\Documents\Coding\Scripts\PowerPoint\course_evaluation\ppxt_images\slide_'+str(i+1)+'.jpg', api_key)
+                response = ppxt_visual_eval.run(r'\ppxt_images\slide_'+str(i+1)+'.jpg', api_key)
         else:
             messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
             response = client.chat.completions.create(
