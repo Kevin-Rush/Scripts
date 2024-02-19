@@ -48,9 +48,9 @@ def run(image_path, api_key):
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
     response = response.json()
 
-    #tokens = response['usage']
+    tokens = response['usage']
     response = response['choices'][0]['message']['content']
     #print(response)
     #print("Tokesn used: ", tokens)
 
-    return response
+    return response, tokens
