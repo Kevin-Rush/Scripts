@@ -57,7 +57,7 @@ def process(ppxt_filepath):
                 slide_type = "Activity"
             elif (slide_number == 1 and slide_text == "AI for Workforce") or (subtitle == "No Subtitle" and slide_text == ""):
                 slide_type = "Title"
-            elif subtitle == "No Subtitle" and slide_text != "":
+            elif (title == "Not Title" and slide_text == "") or (subtitle == "No Subtitle" and slide_text != ""):
                 slide_type = "Transition"
             else:
                 slide_type = "Content"
