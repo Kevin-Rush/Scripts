@@ -47,11 +47,15 @@ def process(ppxt_filepath):
 
             if "agenda" in title.lower():
                 slide_type = "Agenda"
+            elif title == "No Title" and subtitle == "Recap":
+                slide_type = "Recap"
+            elif title == "No Title" and "Legal Disclaimers" in slide_text:
+                slide_type = "Legal"
             elif "discussion" in title.lower():
                 slide_type = "Discussion"
             elif "activity" in title.lower():
                 slide_type = "Activity"
-            elif subtitle == "No Subtitle" and slide_text == "":
+            elif (slide_number == 1 and slide_text == "AI for Workforce") or (subtitle == "No Subtitle" and slide_text == ""):
                 slide_type = "Title"
             elif subtitle == "No Subtitle" and slide_text != "":
                 slide_type = "Transition"
