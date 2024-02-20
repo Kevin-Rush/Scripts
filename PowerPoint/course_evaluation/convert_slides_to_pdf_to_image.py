@@ -29,10 +29,9 @@ def pdf_to_images(pdf_file, output_folder):
         img.compression_quality = 99
         # Iterate over each page in the PDF
         for i, page in enumerate(img.sequence):
-            print(" Processing page: ", i+1, " of ", len(img.sequence))
             percentage = int((i / len(img.sequence)) * 100)
             loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
-            print(f"\r[{loading_bar}] {percentage + 4}%", end='')
+            print(f"Processing page: {i+1} of {len(img.sequence)} \r[{loading_bar}] {percentage}%", end='')
 
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))
@@ -60,6 +59,6 @@ def run(ppxt_file, root):
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
 
-    pdf_file = r"" #enter the path to the pdf file
+    pdf_file = r"C:\Users\kevin\Downloads\Slides Week 9 - GAI.pdf"
     output_folder = root + "ppxt_images/"
     pdf_to_images(pdf_file, output_folder)
