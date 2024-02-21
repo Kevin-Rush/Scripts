@@ -1,31 +1,33 @@
 import requests
 from sapling import SaplingClient
+from pptx import Presentation
+from pptx.enum.shapes import MSO_SHAPE_TYPE
+import pandas as pd
 
-def grammar_evaluation(df, sapling_api_key):
+def grammar_evaluation(ppxt_filepath, sapling_api_key):
 
-    #remove the columns slide number and slide type
-    df = df.drop(columns=['Slide Number', 'Slide Type', 'Slide Title'])
-    #replace all entries of no info with ""
-    df = df.replace("No Subtitle", "")
-    df = df.replace("No Content", "")
-    df = df.replace("No Notes", "")
+    presentation = Presentation(ppxt_filepath)
 
-    #before sending to sapling, remove all links
-    df = df.replace(r'http\S+', '', regex=True).replace(r'www\S+', '', regex=True)
+    for i, slide in enumerate(presentation.slides, start=1):
+ 
+        client = SaplingClient
 
-    #run through each row of the dataframe and send the slide text to sapling
-    for i, row in df.iterrows():
-        
-        client = SaplingClient(api_key=sapling_api_key)
-        edits = client.edits('Lets get started!', session_id='test_session')
+        for shape in slide.shapes:
 
-        text = str(text)
-        edits = sorted(edits, key=lambda e: (e['sentence_start'] + e['start']), reverse=True)
-        for edit in edits:
-            start = edit['sentence_start'] + edit['start']
-            end = edit['sentence_start'] + edit['end']
-            if start > len(text) or end > len(text):
-                print(f'Edit start:{start}/end:{end} outside of bounds of text:{text}')
-                continue
-            text = text[: start] + edit['replacement'] + text[end:]
+            #access the text in all types of shapes
+            if shape.has_text_frame:
+                for paragraph in shape.text_frame.paragraphs:
+                    paragraph_text = "".join(run.text for run in paragraph.runs)
+                    #send the slide text to sapling
+                    edits = client.edits(paragraph_text, session_id='test_session')
+
+                    text = str(text)
+                    edits = sorted(edits, key=lambda e: (e['sentence_start'] + e['start']), reverse=True)
+                    for edit in edits:
+                        start = edit['sentence_start'] + edit['start']
+                        end = edit['sentence_start'] + edit['end']
+                        if start > len(text) or end > len(text):
+                            print(f'Edit start:{start}/end:{end} outside of bounds of text:{text}')
+                            continue
+                        text = text[: start] + edit['replacement'] + text[end:]
         return text
