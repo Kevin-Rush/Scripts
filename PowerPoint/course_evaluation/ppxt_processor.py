@@ -1,3 +1,4 @@
+from colorama import Fore
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
@@ -9,6 +10,8 @@ def process(ppxt_filepath):
 
     #create an empty dataframe
     df = pd.DataFrame(columns=['Slide Number', 'Slide Type', 'Title', 'Subtitle', 'Slide Text', 'Notes Text'])
+    
+    print(f"{Fore.GREEN}---------------------Begin Processing Slides---------------------{Fore.RESET}")
 
     for i, slide in enumerate(presentation.slides, start=1):
         slide_number = i
@@ -63,5 +66,6 @@ def process(ppxt_filepath):
                 slide_type = "Content"
         #add slide 
         df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
+        print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
 
     return df
