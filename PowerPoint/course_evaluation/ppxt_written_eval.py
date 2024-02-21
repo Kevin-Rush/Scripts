@@ -32,8 +32,8 @@ def evaluate(df, api_key):
         print(row)
         
         # Make different calls to chatgpt based on slide_type
-        if slide_type == "Recap" or slide_type == "Legal":
-            response = "Ignore Recap and Legal"
+        if slide_type == "Recap" or slide_type == "Legal" or slide_type == "Bibliography":
+            response = "Ignored"
         elif slide_type == 'Title':
             messages_highview.append({"role": "user", "content": "Hello, can you tell me if this is a good slide title? If it's good, say 'It's good' and nothing else, but if it's bad, tell me exactly why in one sentence and give me an alternative title around the same length if not shorter. Slide Title: " + row['Title']})
             response = client.chat.completions.create(
