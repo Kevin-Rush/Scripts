@@ -31,7 +31,7 @@ def pdf_to_images(pdf_file, output_folder):
         for i, page in enumerate(img.sequence):
             percentage = int((i / len(img.sequence)) * 100)
             loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
-            print(f"Processing page: {i+1} of {len(img.sequence)} \r[{loading_bar}] {percentage}%", end='')
+            print(f" Processing page: {i+1} of {len(img.sequence)} \r[{loading_bar}] {percentage}%", end='')
 
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))
