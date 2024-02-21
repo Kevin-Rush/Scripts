@@ -7,30 +7,30 @@ import glob
 from colorama import Fore, Style
 import os
 
-with open("", "r") as file: #enter the path to the gpt_key.txt file
-    api_key = file.read()
+with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
+    gpt_api_key = file.read()
 
-#or hard code the api key
-#api_key = ""  
+with open("C:/Users/kevin/Documents/Coding/Scripts/sapling_api_key.txt", "r") as file:
+    sapling_api_key = file.read()
 
-ppxt_file_glob = glob.glob(r'') #enter the path to the ppxt file
+ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Slides Week 9 - GAI.pptx')
 
 output_file = "extracted_script.txt"
-root = "" #enter the path to the root folder
+root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
 
 print(f"{Fore.RESET}Start")
 df = ppxt_processor.process(ppxt_file_glob[0])
 print(f"{Fore.GREEN}---------------------Slide Deck Contents Saved in DataFrame---------------------{Fore.RESET}")
 
-#print all the columns of the dataframe
-print(df.head(1))
+df.to_csv(root + "ppxt_pre_eval.csv", index=False)
+print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
 
 print(f"{Fore.YELLOW}---------------------Converter Deck to Images---------------------{Fore.RESET}")
 convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 print(f"{Fore.GREEN}---------------------Conversion Successful---------------------{Fore.RESET}")
 
 print(f"{Fore.YELLOW}---------------------Evaluate the Deck---------------------{Fore.RESET}")
-df = ppxt_written_eval.evaluate(df, api_key)
+df = ppxt_written_eval.evaluate(df, gpt_api_key)
 print(f"{Fore.GREEN}---------------------Evaluation Successful---------------------{Fore.RESET}")
 
 #run through all the images in the folder ppxt_images and delete them
@@ -42,11 +42,6 @@ for img_file in img_files:
     os.remove(img_file)
 
 print(f"{Fore.GREEN}---------------------Images Removed---------------------{Fore.RESET}")
-
-#add new columns to the dataframe
-df['Response'] = ""
-df['Visual Evaluation'] = ""
-
 
 #save the dataframe to a csv
 df.to_csv(root + "ppxt_eval.csv", index=False)
