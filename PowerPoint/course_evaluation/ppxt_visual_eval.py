@@ -14,7 +14,7 @@ def run(image_path, api_key):
     # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
     openai.api_key = api_key
     
-    print(f"{Fore.GREEN}-----------------Image Processed-----------------{Fore.RESET}")
+    print(f"{Fore.GREEN}\n-----------------Image Processed-----------------{Fore.RESET}")
     print(image_path)
     # Full path to the image file
     base64_image = encode_image(image_path)
