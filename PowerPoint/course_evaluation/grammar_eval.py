@@ -22,11 +22,14 @@ def grammar_evaluation(ppxt_filepath, sapling_api_key):
                     for edit in edits:
                         start = edit['sentence_start'] + edit['start']
                         end = edit['sentence_start'] + edit['end']
-                        if start > len(text) or end > len(text):
-                            print(f'Edit start:{start}/end:{end} outside of bounds of text:{text}')
+                        if start > len(paragraph_text) or end > len(paragraph_text):
+                            print(f'Edit start:{start}/end:{end} outside of bounds of text:{paragraph_text}')
                             continue
-                        text = text[: start] + edit['replacement'] + text[end:]
-        return text
+                        paragraph_text = paragraph_text[: start] + edit['replacement'] + paragraph_text[end:]
+                    paragraph.text = paragraph_text
+    #save the edited presentation to a file with the same path but a slightly different name
+    presentation.save(ppxt_filepath[:-5] + "_edited.pptx")
+    print("Grammar evaluation complete")
     
 
 #open the file sapling_api_key.txt and read the api key
