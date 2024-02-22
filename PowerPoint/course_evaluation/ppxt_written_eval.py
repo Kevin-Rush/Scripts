@@ -28,8 +28,6 @@ def evaluate(df, api_key):
         ]
         
         slide_type = row['Slide Type']
-
-        print(row)
         
         # Make different calls to chatgpt based on slide_type
         if slide_type == "Recap" or slide_type == "Legal" or slide_type == "Bibliography":
@@ -45,7 +43,7 @@ def evaluate(df, api_key):
             response = response.choices[0].message.content
         
         elif slide_type == 'Agenda':
-            messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my agenda slide? Let me know what you think about: 1) The overall flow 2) The naming of the specific sections Slide. Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text'] + "If it's"})
+            messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my agenda slide? Let me know what you think about: 1) The overall flow 2) The naming of the specific sections Slide. Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text']) + "If it's"})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_highview,
@@ -65,7 +63,7 @@ def evaluate(df, api_key):
             response = response.choices[0].message.content
         
         elif slide_type == 'Discussion':
-            messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my discussion questions? If they're good, say 'They're good' and nothing else, but if they're bad, tell me why and give me some alternatives. Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
+            messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my discussion questions? If they're good, say 'They're good' and nothing else, but if they're bad, tell me why and give me some alternatives. Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_activity,
@@ -75,7 +73,7 @@ def evaluate(df, api_key):
             response = response.choices[0].message.content
         
         elif slide_type == 'Activity':
-            messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my activity questions? Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
+            messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my activity questions? Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_activity,
@@ -94,7 +92,7 @@ def evaluate(df, api_key):
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
         else:
-            messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + row['Title'] + " Slide Contents: " + row['Slide Text'] + " Slide Notes: " + row['Notes Text']})
+            messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
                 model="gpt-4",
                 messages=messages_lowview,
@@ -105,10 +103,10 @@ def evaluate(df, api_key):
 
         #add the response to the column 'Response' in the df
         df.at[i, 'Response'] = response
-        print(response)
-        # percentage = int((i / len(df)) * 100)
-        # loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
-        # print(f"\r[{loading_bar}] {percentage}%", end='')
+        #print(response)
+        percentage = int((i / len(df)) * 100)
+        loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
+        print(f"\r[{loading_bar}] {percentage}%", end='')
     print()
     print(f"{Fore.RED}---------------------Total Tokens Used: {total_tokens}---------------------{Fore.RESET}")
     print()
