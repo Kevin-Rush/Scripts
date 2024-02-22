@@ -3,6 +3,7 @@ from sapling import SaplingClient
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
+from pptx import Presentation
 
 def grammar_evaluation(ppxt_filepath, sapling_api_key):
 
@@ -15,29 +16,27 @@ def grammar_evaluation(ppxt_filepath, sapling_api_key):
             #access the text in all types of shapes
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
-                    paragraph_text = "".join(run.text for run in paragraph.runs)
-                    print(paragraph_text)
-                    #send the slide text to sapling
-                    edits = client.edits(paragraph_text, session_id='test_session')
-                    print(edits["edits"])
-                    if paragraph_text == "Legal Disclaimers":
-                        continue
-                    elif edits["edits"] != []:
-                        for edit in edits["edits"]:
-                            print("type(edit['sentence_start']): ", type(edit["sentence_start"]))
-                            print("type(edit['start']): ", type(edit["start"]))
-                            print("type(edit['end']): ", type(edit["end"]))
-                            start = edit['sentence_start'] + edit['start']
-                            end = edit['sentence_start'] + edit['end']
-                            if start > len(paragraph_text) or end > len(paragraph_text):
-                                print(f'Edit start:{start}/end:{end} outside of bounds of text:{paragraph_text}')
-                                continue
-                            paragraph_text = paragraph_text[: start] + edit['replacement'] + paragraph_text[end:]
-                        paragraph.text = paragraph_text
+                    for run in paragraph.runs:                        
+                        run_text = run.text
+                        edits = client.edits(run_text, session_id='test_session')
+
+                        if run_text == "Legal Disclaimers":
+                            continue
+                        elif edits["edits"] != []:
+                            print(f'Slide: {i}')
+                            print(f'run_text: {run_text}')
+                            print(f'Edits: {edits["edits"]}')
+                            for edit in edits["edits"]:
+                                start = edit['sentence_start'] + edit['start']
+                                end = edit['sentence_start'] + edit['end']
+                                if start > len(run_text) or end > len(run_text):
+                                    print(f'Edit start:{start}/end:{end} outside of bounds of text:{run_text}')
+                                    continue
+                                run_text = run_text[: start] + edit['replacement'] + run_text[end:]
+                            run.text = run.text.replace(run.text, run_text)
     #save the edited presentation to a file with the same path but a slightly different name
     presentation.save(ppxt_filepath[:-5] + "_edited.pptx")
     print("Grammar evaluation complete")
-    
 
 #open the file sapling_api_key.txt and read the api key
 with open("C:/Users/kevin/Documents/Coding/Scripts/sapling_api_key.txt", "r") as file:
