@@ -58,7 +58,8 @@ def run(ppxt_file, root):
     print(f"{Fore.YELLOW}---------------------Save Images---------------------{Fore.RESET}")
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
-
-    pdf_file = r"C:\Users\kevin\Downloads\Slides Week 9 - GAI.pdf"
+    pdf_file = ppxt_file[0][:-5] + ".pdf"
+    
+    #pdf_file = r"C:\Users\kevin\Downloads\course\Week 9 - GAI.pdf"
     output_folder = root + "ppxt_images/"
     pdf_to_images(pdf_file, output_folder)

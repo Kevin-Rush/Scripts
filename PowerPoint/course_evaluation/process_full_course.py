@@ -3,7 +3,6 @@ from ppxt_processor import process
 
 def process_ppxt_files(repository_path):
     output_file = "output.txt"
-    ppxt_processor = "ppxt_processor.py"
     # Get all ppxt files in the repository
     ppxt_files = [file for file in os.listdir(repository_path) if file.endswith(".pptx")]
     print(ppxt_files)
@@ -27,6 +26,6 @@ def process_ppxt_files(repository_path):
 
     print(f"All ppxt files processed. Output saved to {output_file}.")
 
-repository_path = "C:/Users/kevin/Downloads/course"
+repository_path = "C:/Users/kevin/Downloads/OneDrive_2024-02-29"
 
 process_ppxt_files(repository_path)
