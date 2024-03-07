@@ -7,6 +7,7 @@ def evaluate(df, api_key):
 
     client = OpenAI()
     client.api_key = api_key
+    model = "gpt-4-1106-preview"
 
     #add the column 'Response' to the dataframe
     df['Response'] = ""
@@ -35,7 +36,7 @@ def evaluate(df, api_key):
         elif slide_type == 'Title':
             messages_highview.append({"role": "user", "content": "Hello, can you tell me if this is a good slide title? If it's good, say 'It's good' and nothing else, but if it's bad, tell me exactly why in one sentence and give me an alternative title around the same length if not shorter. Slide Title: " + row['Title']})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_highview,
             )
             messages_highview.pop()
@@ -45,7 +46,7 @@ def evaluate(df, api_key):
         elif slide_type == 'Agenda':
             messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my agenda slide? Let me know what you think about: 1) The overall flow 2) The naming of the specific sections Slide. Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text']) + "If it's"})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_highview,
             )
             messages_highview.pop()
@@ -55,7 +56,7 @@ def evaluate(df, api_key):
         elif slide_type == 'Transition':
             messages_highview.append({"role": "user", "content": "Hello, can you please evaluate my transition slide? If it's good, say 'It's good' and nothing else, but if it's bad, tell me exactly why in one sentence and give me an alternative transition around the same length if not shorter. Slide Contents: " + row['Slide Text']})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_highview,
             )
             messages_highview.pop()
@@ -65,7 +66,7 @@ def evaluate(df, api_key):
         elif slide_type == 'Discussion':
             messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my discussion questions? If they're good, say 'They're good' and nothing else, but if they're bad, tell me why and give me some alternatives. Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_activity,
             )
             messages_activity.pop()
@@ -75,7 +76,7 @@ def evaluate(df, api_key):
         elif slide_type == 'Activity':
             messages_activity.append({"role": "user", "content": "Hello, can you please evaluate my activity questions? Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_activity,
             )
             messages_activity.pop()
@@ -94,7 +95,7 @@ def evaluate(df, api_key):
         else:
             messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
             response = client.chat.completions.create(
-                model="gpt-4",
+                model=model,
                 messages=messages_lowview,
             )
             messages_lowview.pop()
