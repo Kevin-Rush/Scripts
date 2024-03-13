@@ -21,7 +21,7 @@ def  gen_image_for_slide(json_script, presentation_file, api_key):
 
     for i in range(len(content)):
         #load the slide number corresponding to i
-        print("-----------------Slide: ", i+1, "-----------------")
+        print("-----------------Slide:", i+1, "-----------------")
         slide = presentation.slides[i]
         notes = content[i]['notes']
         print()
