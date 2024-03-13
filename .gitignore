@@ -6,6 +6,7 @@
 ppxt_images/
 *script.txt
 *script.json
+scripts/
 __pycache__/
 *.png
 *ppxt_eval.csv
