@@ -4,12 +4,14 @@ import slide_deck_generator
 import slide_image_gen
 
 # Input file
-input_file = "" #enter the path to the input txt script file 
-json_script = "scripts/automation_presentation_script.json" #enter the path to the output json script file
-base_ppxt = '' #enter the name of the base powerpoint file that will use the master slide as the template for the generated presentation
+file_name = "impact_festival_extension"
+
+input_file = "scripts/"+file_name+".txt"
+json_script = "scripts/"+file_name+".json"
+base_ppxt = 'base_presentation.pptx'
 
 #read my api key from the gpt_key.txt file
-with open(r"", "r") as file:
+with open(r"C:\Users\kevin\Documents\Coding\Scripts\gpt_api_key.txt", "r") as file:
     api_key = file.read()
 
 #Or hard code the api key
