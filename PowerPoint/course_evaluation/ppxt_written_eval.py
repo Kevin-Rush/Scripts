@@ -2,14 +2,12 @@ from colorama import Fore
 from openai import OpenAI
 import ppxt_visual_eval
 
-def count_overused_words(df, overused_words):
-    # this function takes in a dataframe and a df of overused words
-    # it searches for the specific words in the overused words list in the 'Slide Text' and 'Notes Text' columns
-    # it adds  a dictionary with the count of each overused word in the dataframe
-    
-    for word in overused_words:
+def count_overused_words(df, common_generated_terms):
+    # This function takes a dataframe and a list of common generated terms and returns the dataframe with the count of each term in the 'Slide Text' and 'Notes Text' columns   
+    for word in common_generated_terms:
         df[word] = df['Slide Text'].str.count(word) + df['Notes Text'].str.count(word)
     return df
+
 
 def evaluate_content(df, api_key):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
