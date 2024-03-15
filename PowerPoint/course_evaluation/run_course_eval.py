@@ -20,7 +20,7 @@ with open("C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/
     print(common_generated_terms)
 
 
-ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Week 3 - GAI.pptx')
+ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Week 11 - GAI.pptx')
 
 output_file = "extracted_script.txt"
 root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
@@ -31,22 +31,18 @@ print(f"{Fore.RESET}Start")
 df = ppxt_processor.process(ppxt_file_glob[0])
 print(f"{Fore.GREEN}---------------------Slide Deck Contents Saved in DataFrame---------------------{Fore.RESET}")
 
-df.to_csv(root + "ppxt_pre_eval.csv", index=False)
-print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
-
-#df = pd.read_csv(root + "ppxt_pre_eval.csv")
-
 df = ppxt_written_eval.count_overused_words(df, common_generated_terms)
 print(df)
 #sum entire columns in the df   
 for word in common_generated_terms:
     print(f"{word}: {df[word].sum()}")
 
-
 df.to_csv(root + "ppxt_pre_eval.csv", index=False)
 print(f"{Fore.GREEN}---------------------Common Generated Terms Counted---------------------{Fore.RESET}")
+print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
 
-'''
+#df = pd.read_csv(root + "ppxt_pre_eval.csv")
+
 print(f"{Fore.YELLOW}---------------------Converter Deck to Images---------------------{Fore.RESET}")
 convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 print(f"{Fore.GREEN}---------------------Conversion Successful---------------------{Fore.RESET}")
@@ -72,4 +68,3 @@ df['Content Developer Notes'] = ""
 #save the dataframe to a csv
 df.to_csv(root + "ppxt_eval.csv", index=False)
 print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
-'''
