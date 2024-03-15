@@ -11,3 +11,4 @@ __pycache__/
 *.png
 *ppxt_eval.csv
 *ppxt_pre_eval.csv
+*credentials.txt
