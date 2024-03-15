@@ -9,7 +9,7 @@ def count_overused_words(df, common_generated_terms):
     return df
 
 
-def evaluate_content(df, api_key):
+def evaluate(df, api_key):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
 
     client = OpenAI()
