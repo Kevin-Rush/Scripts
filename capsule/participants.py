@@ -19,7 +19,12 @@ if response.status_code == 200:
     data = response.json()
     #save the extracted json data in a df
     df = pd.DataFrame(data['parties'])
-    print(df.columns())
+    
+    #print the comolumns in the df
+    print(df.columns)
 
+    #save first name, last name, and email to a csv file
+    df.to_csv('participants.csv', columns=['firstName', 'lastName', 'emailAddresses'], index=False)
+    print('Emails saved to participants.csv')
 else:
     print(f'Request failed with status code {response.status_code}')
