@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 
 #read the api token from the capsule_api.txt file
-with open("capsule_api.txt", "r") as file:
+with open("capsule_api_key.txt", "r") as file:
     api_token = file.read()
 
 
@@ -19,7 +19,7 @@ if response.status_code == 200:
     data = response.json()
     #save the extracted json data in a df
     df = pd.DataFrame(data['parties'])
-    print(df.head())
+    print(df.columns())
 
 else:
     print(f'Request failed with status code {response.status_code}')
