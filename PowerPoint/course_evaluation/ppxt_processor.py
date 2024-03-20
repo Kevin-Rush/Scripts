@@ -10,6 +10,9 @@ def process(ppxt_filepath):
 
     #create an empty dataframe
     df = pd.DataFrame(columns=['Slide Number', 'Slide Type', 'Title', 'Subtitle', 'Slide Text', 'Notes Text'])
+
+    #add all ways the team is referencing the sources before links in this list
+    image_source_prefixes = ["source", "reference", "image source", "image reference", "source:", "reference:", "image source:", "image reference:"]
     
     print(f"{Fore.GREEN}---------------------Begin Processing Slides---------------------{Fore.RESET}")
 
@@ -23,6 +26,10 @@ def process(ppxt_filepath):
         notes_text = ""
 
         for shape in slide.shapes:
+
+            
+
+
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
 
@@ -38,14 +45,31 @@ def process(ppxt_filepath):
                     paragraph_text = "".join(run.text for run in paragraph.runs)
                     if paragraph_text.strip() and paragraph_text != title:  # Check if the paragraph text is not empty
                         if paragraph_text.strip() != subtitle.strip():
-                            if "image source:" not in paragraph_text.lower():
-                                slide_text += paragraph_text + "\n"
+                                print(f"{Fore.RED}---------------------Content---------------------{Fore.RESET}")
+                                #check if the text contains a link
+                                print(paragraph_text)
+                                if "http" in paragraph_text:
+                                    split_paragraph = paragraph_text.split("http")
+                                    post_http = split_paragraph[1].split(" ")
+                                    paragraph_text = split_paragraph[0]
+                                    for i in range(1, len(post_http)):
+                                        paragraph_text += post_http[i] + " "
+
+                                slide_text += paragraph_text +"\n"
             
 
             # Accessing the notes within the slide
             if notes_text == "" and slide.has_notes_slide:
                 notes_slide = slide.notes_slide
                 for paragraph in notes_slide.notes_text_frame.paragraphs:
+                    print(f"{Fore.RED}---------------------Notes---------------------{Fore.RESET}")
+                    if "http" in paragraph.text:
+                        split_paragraph = paragraph.text.split("http")
+                        post_http = split_paragraph[1].split(" ")
+                        paragraph.text = split_paragraph[0]
+                        for i in range(1, len(post_http)):
+                            paragraph.text += post_http[i] + " "
+
                     notes_text += paragraph.text
 
             if "agenda" in title.lower():
