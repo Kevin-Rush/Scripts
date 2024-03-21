@@ -91,7 +91,7 @@ def process(ppxt_filepath):
                 slide_type = "Content"
         
         if smart_art_detected:
-            print(f"{Fore.RED}/n---------------------Smart Art Detected---------------------{Fore.RESET}")
+            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
             if i < 9:
                 path = slides_as_images_path + "\slide_0" + str(i) + ".jpg"
             else:
@@ -113,6 +113,5 @@ def detect_smart_art(slide, i):
     smart_art_detected = False
     for i in range (len(smart_art_tags)):
         if smart_art_tags[i] in xml:
-            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
             smart_art_detected = True
     return smart_art_detected
