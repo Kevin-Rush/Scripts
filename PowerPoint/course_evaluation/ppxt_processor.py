@@ -1,7 +1,9 @@
+import random
 from colorama import Fore
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
+
 
 def process(ppxt_filepath):
     #this function processes a PowerPoint file and returns a dataframe with the slide number, title, slide text, and notes text
@@ -10,13 +12,13 @@ def process(ppxt_filepath):
 
     #create an empty dataframe
     df = pd.DataFrame(columns=['Slide Number', 'Slide Type', 'Title', 'Subtitle', 'Slide Text', 'Notes Text'])
-
-    #add all ways the team is referencing the sources before links in this list
-    image_source_prefixes = ["source", "reference", "image source", "image reference", "source:", "reference:", "image source:", "image reference:"]
     
     print(f"{Fore.GREEN}---------------------Begin Processing Slides---------------------{Fore.RESET}")
 
     for i, slide in enumerate(presentation.slides, start=1):
+
+        detect_smart_art(slide, i) 
+
         slide_number = i
 
         slide_type = "No Type"
@@ -26,9 +28,6 @@ def process(ppxt_filepath):
         notes_text = ""
 
         for shape in slide.shapes:
-
-            
-
 
             if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
                 title = shape.text
@@ -45,7 +44,6 @@ def process(ppxt_filepath):
                     paragraph_text = "".join(run.text for run in paragraph.runs)
                     if paragraph_text.strip() and paragraph_text != title:  # Check if the paragraph text is not empty
                         if paragraph_text.strip() != subtitle.strip():
-                                print(f"{Fore.RED}---------------------Content---------------------{Fore.RESET}")
                                 #check if the text contains a link
                                 print(paragraph_text)
                                 if "http" in paragraph_text:
@@ -62,7 +60,6 @@ def process(ppxt_filepath):
             if notes_text == "" and slide.has_notes_slide:
                 notes_slide = slide.notes_slide
                 for paragraph in notes_slide.notes_text_frame.paragraphs:
-                    print(f"{Fore.RED}---------------------Notes---------------------{Fore.RESET}")
                     if "http" in paragraph.text:
                         split_paragraph = paragraph.text.split("http")
                         post_http = split_paragraph[1].split(" ")
@@ -93,3 +90,15 @@ def process(ppxt_filepath):
         print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
 
     return df
+
+
+def detect_smart_art(slide, i):
+
+    smart_art_tags = ["</p:graphicFrame>", "<p:grpSp>"]
+    xml = slide._element.xml
+    smart_art_detected = False
+    for i in range (len(smart_art_tags)):
+        if smart_art_tags[i] in xml:
+            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
+            smart_art_detected = True
+    return smart_art_detected
