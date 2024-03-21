@@ -101,7 +101,7 @@ def process(ppxt_filepath):
         #add slide 
         df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
         print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
-        utils.print_loader_df(len(df), i)
+        utils.print_loader(len(df), i)
 
     return df
 
