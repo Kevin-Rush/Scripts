@@ -5,3 +5,5 @@ def print_loader (length, i):
     percentage = int((i / length) * 100)
     loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
     print(f"\r[{loading_bar}] {percentage}%", end='')
+    if percentage == 100:
+        print()
