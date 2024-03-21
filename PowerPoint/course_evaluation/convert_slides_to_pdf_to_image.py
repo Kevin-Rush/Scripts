@@ -30,7 +30,7 @@ def pdf_to_images(pdf_file, output_folder):
         img.compression_quality = 99
         # Iterate over each page in the PDF
         for i, page in enumerate(img.sequence):
-            utils.print_loader_df(len(img.sequence), i)
+            utils.print_loader(len(img.sequence), i)
 
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))

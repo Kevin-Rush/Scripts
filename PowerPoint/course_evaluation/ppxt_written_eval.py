@@ -18,7 +18,7 @@ def count_overused_words(df, common_generated_terms):
 def evaluate(df):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
 
-    model = "gpt-4-1106-preview"
+    model = "gpt-4-0125-preview"
 
     #add the column 'Response' to the dataframe
     df['Response'] = ""
@@ -94,7 +94,7 @@ def evaluate(df):
             total_tokens += response.usage.total_tokens
             response = response.choices[0].message.content
             
-        elif slide_type == 'Content' and row['Slide Text'] == "":
+        elif row['Smart Art Detected']:
             if i < 9:
                 response = ppxt_vision.slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg')
                 total_tokens += response['usage']["total_tokens"]

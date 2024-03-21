@@ -90,16 +90,16 @@ def process(ppxt_filepath):
             else:
                 slide_type = "Content"
         
-        if smart_art_detected:
-            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
-            if i < 9:
-                path = slides_as_images_path + "\slide_0" + str(i) + ".jpg"
-            else:
-                path = slides_as_images_path + "\slide_" + str(i) + ".jpg"
-            response = ppxt_vision.read_SM_slide(path, notes_text)
-            slide_text += response
+        # if smart_art_detected:
+        #     print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
+        #     if i < 9:
+        #         path = slides_as_images_path + "\slide_0" + str(i) + ".jpg"
+        #     else:
+        #         path = slides_as_images_path + "\slide_" + str(i) + ".jpg"
+        #     response = ppxt_vision.read_SM_slide(path, notes_text)
+        #     slide_text += response
         #add slide 
-        df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
+        df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text, 'Smart Art Detected': smart_art_detected}, ignore_index=True)
         print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
         utils.print_loader(len(df), i)
 
