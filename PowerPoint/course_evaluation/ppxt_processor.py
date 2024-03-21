@@ -91,11 +91,11 @@ def process(ppxt_filepath):
                 slide_type = "Content"
         
         if smart_art_detected:
-            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
+            print(f"{Fore.RED}/n---------------------Smart Art Detected---------------------{Fore.RESET}")
             if i < 9:
-                path = slides_as_images_path + "\slide_0" + str(i+1) + ".jpg"
+                path = slides_as_images_path + "\slide_0" + str(i) + ".jpg"
             else:
-                path = slides_as_images_path + "\slide_" + str(i+1) + ".jpg"
+                path = slides_as_images_path + "\slide_" + str(i) + ".jpg"
             response = ppxt_vision.read_SM_slide(path, notes_text)
             slide_text += response
         #add slide 
