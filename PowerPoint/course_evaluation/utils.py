@@ -1,6 +1,6 @@
 #useful functions used across multiple scripts
 
-def print_loader_df (length, i):
+def print_loader (length, i):
     #print a loading bar for a dataframe
     percentage = int((i / length) * 100)
     loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
