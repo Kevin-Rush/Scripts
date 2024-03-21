@@ -24,11 +24,10 @@ def run_slide_eval(image_path):
     return response
 
 def read_SM_slide(image_path, additional_text):
-    print(f"{Fore.GREEN}---------------------Reading Smart Art---------------------{Fore.RESET}")
     prompt = "You are a powerpoint slide describer. Your job is to take in an image of a slide that contains graphics and describe the slide as accurately as possible for the visually impaired. You need to identify the text within the slide and describe how the visual effects on the slide are used to alongside the text. Your response should professional and easy to follow. The slides also have a notes section: " + additional_text + "Use these notes to help inform you about what this slide is about."
 
     response = call_gpt_vision(image_path, prompt)
-    print(f"{Fore.GREEN}---------------------Smart Art Slide Analyzed---------------------{Fore.RESET}")
+    print(f"{Fore.GREEN}---------------------Smart Art Read---------------------{Fore.RESET}")
 
     return response['choices'][0]['message']['content']
 

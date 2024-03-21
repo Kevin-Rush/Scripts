@@ -1,3 +1,4 @@
+import utils
 import random
 from colorama import Fore
 from pptx import Presentation
@@ -70,15 +71,6 @@ def process(ppxt_filepath):
                             paragraph.text += post_http[i] + " "
 
                     notes_text += paragraph.text
-            
-            if smart_art_detected:
-                print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
-                if i < 9:
-                    path = slides_as_images_path + "\slide_0" + str(i+1) + ".jpg"
-                else:
-                    path = slides_as_images_path + "\slide_" + str(i+1) + ".jpg"
-                response = ppxt_vision.read_SM_slide(path, notes_text)
-                slide_text += response
                 
 
             if "agenda" in title.lower():
@@ -97,9 +89,19 @@ def process(ppxt_filepath):
                 slide_type = "Transition"
             else:
                 slide_type = "Content"
+        
+        if smart_art_detected:
+            print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
+            if i < 9:
+                path = slides_as_images_path + "\slide_0" + str(i+1) + ".jpg"
+            else:
+                path = slides_as_images_path + "\slide_" + str(i+1) + ".jpg"
+            response = ppxt_vision.read_SM_slide(path, notes_text)
+            slide_text += response
         #add slide 
         df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text}, ignore_index=True)
         print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
+        utils.print_loader_df(len(df), i)
 
     return df
 

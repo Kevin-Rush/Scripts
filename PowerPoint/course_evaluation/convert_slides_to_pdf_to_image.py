@@ -5,6 +5,7 @@ import win32com.client
 from wand.image import Image
 from PIL import Image as PilImage
 import numpy as np
+import utils
 
 def ppxt_to_pdf(files, root, formatType = 32):
     # Convert ppxt to PDF using win32com
@@ -29,9 +30,7 @@ def pdf_to_images(pdf_file, output_folder):
         img.compression_quality = 99
         # Iterate over each page in the PDF
         for i, page in enumerate(img.sequence):
-            percentage = int((i / len(img.sequence)) * 100)
-            loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
-            print(f" Processing page: {i+1} of {len(img.sequence)} \r[{loading_bar}] {percentage}%", end='')
+            utils.print_loader_df(len(img.sequence), i)
 
             # Convert wand image to PIL image
             pil_img = PilImage.fromarray(np.array(page))
