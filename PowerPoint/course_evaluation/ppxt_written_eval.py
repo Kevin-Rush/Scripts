@@ -1,6 +1,7 @@
 from colorama import Fore
 from openai import OpenAI
 import ppxt_vision
+import utils
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
     gpt_api_key = file.read()
@@ -115,9 +116,7 @@ def evaluate(df):
         #add the response to the column 'Response' in the df
         df.at[i, 'Response'] = response
         #print(response)
-        percentage = int((i / len(df)) * 100)
-        loading_bar = '#' * (percentage // 2 + 2) + '-' * (50 - percentage // 2)
-        print(f"\r[{loading_bar}] {percentage}%", end='')
+        utils.print_loader_df(df, i)
     print()
     print(f"{Fore.RED}---------------------Total Tokens Used: {total_tokens}---------------------{Fore.RESET}")
     print()
