@@ -3,7 +3,7 @@ from colorama import Fore
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
-from ppxt_vision import read_SM_slide
+import ppxt_vision
 
 
 def process(ppxt_filepath):
@@ -13,6 +13,7 @@ def process(ppxt_filepath):
 
     #create an empty dataframe
     df = pd.DataFrame(columns=['Slide Number', 'Slide Type', 'Title', 'Subtitle', 'Slide Text', 'Notes Text'])
+    slides_as_images_path = "C:\\Users\kevin\\Documents\\Coding\\Scripts\\PowerPoint\\course_evaluation\\ppxt_images"
     
     print(f"{Fore.GREEN}---------------------Begin Processing Slides---------------------{Fore.RESET}")
 
@@ -71,6 +72,13 @@ def process(ppxt_filepath):
                     notes_text += paragraph.text
             
             if smart_art_detected:
+                print(f"{Fore.RED}---------------------Smart Art Detected---------------------{Fore.RESET}")
+                if i < 9:
+                    path = slides_as_images_path + "\slide_0" + str(i+1) + ".jpg"
+                else:
+                    path = slides_as_images_path + "\slide_" + str(i+1) + ".jpg"
+                response = ppxt_vision.read_SM_slide(path, notes_text)
+                slide_text += response
                 
 
             if "agenda" in title.lower():

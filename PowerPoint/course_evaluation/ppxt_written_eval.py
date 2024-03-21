@@ -2,6 +2,11 @@ from colorama import Fore
 from openai import OpenAI
 import ppxt_vision
 
+with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
+    gpt_api_key = file.read()
+client = OpenAI()
+client.api_key = gpt_api_key
+
 def count_overused_words(df, common_generated_terms):
     # This function takes a dataframe and a list of common generated terms and returns the dataframe with the count of each term in the 'Slide Text' and 'Notes Text' columns   
     for word in common_generated_terms:
@@ -9,11 +14,9 @@ def count_overused_words(df, common_generated_terms):
     return df
 
 
-def evaluate(df, api_key):
+def evaluate(df):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
 
-    client = OpenAI()
-    client.api_key = api_key
     model = "gpt-4-1106-preview"
 
     #add the column 'Response' to the dataframe
@@ -92,11 +95,11 @@ def evaluate(df, api_key):
             
         elif slide_type == 'Content' and row['Slide Text'] == "":
             if i < 9:
-                response = ppxt_vision.run_slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg', api_key)
+                response = ppxt_vision.run_slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg')
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
             else: 
-                response = ppxt_vision.run_slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg', api_key)
+                response = ppxt_vision.run_slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg')
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
         else:

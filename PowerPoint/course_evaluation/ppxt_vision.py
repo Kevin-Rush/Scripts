@@ -4,33 +4,42 @@ from colorama import Fore
 import requests
 import openai
 
+with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
+    gpt_api_key = file.read()
+
 # Function to encode the image
 def encode_image(image_path):
     #This function encodes the image to base64
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def run_slide_eval(image_path, api_key):
+def run_slide_eval(image_path):
     # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
     print(image_path)
     prompt = "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing (extravegant phrasing includes but is not restricted to: 'delve', 'utilize', 'the art and science of', 'enter the world of', etc.). For visual appeal, I want you to tell me if the information on the slide is presented in an effective way. Ensure that you say 1 good thing about the slide, and then provide 3 specific and actionable pieces feedback. Keep responses short and direct yet professional and only consider the text I've given, do not think beyond the slide."
 
-    response = call_gpt_vision(image_path, prompt, api_key)
+    response = call_gpt_vision(image_path, prompt)
     print(f"{Fore.GREEN}\n-----------------Image Processed-----------------{Fore.RESET}")
 
     return response
 
-def read_SM_slide(slide):
-    return 
+def read_SM_slide(image_path, additional_text):
+    print(f"{Fore.GREEN}---------------------Reading Smart Art---------------------{Fore.RESET}")
+    prompt = "You are a powerpoint slide describer. Your job is to take in an image of a slide that contains graphics and describe the slide as accurately as possible for the visually impaired. You need to identify the text within the slide and describe how the visual effects on the slide are used to alongside the text. Your response should professional and easy to follow. The slides also have a notes section: " + additional_text + "Use these notes to help inform you about what this slide is about."
 
-def call_gpt_vision(image_path, prompt, api_key):
+    response = call_gpt_vision(image_path, prompt)
+    print(f"{Fore.GREEN}---------------------Smart Art Slide Analyzed---------------------{Fore.RESET}")
+
+    return response['choices'][0]['message']['content']
+
+def call_gpt_vision(image_path, prompt):
     # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
-    openai.api_key = api_key
+    openai.api_key = gpt_api_key
     base64_image = encode_image(image_path)
 
     headers = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {api_key}"
+    "Authorization": f"Bearer {gpt_api_key}"
     }
 
     payload = {
