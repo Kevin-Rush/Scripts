@@ -10,7 +10,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def run(image_path, api_key):
+def run_slide_eval(image_path, api_key):
     # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
     openai.api_key = api_key
     
@@ -50,3 +50,6 @@ def run(image_path, api_key):
     response = response.json()
 
     return response
+
+def read_SM_slide(slide):
+    return 

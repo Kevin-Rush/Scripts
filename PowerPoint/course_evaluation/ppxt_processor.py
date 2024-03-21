@@ -3,6 +3,7 @@ from colorama import Fore
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
+from ppxt_vision import read_SM_slide
 
 
 def process(ppxt_filepath):
@@ -17,7 +18,7 @@ def process(ppxt_filepath):
 
     for i, slide in enumerate(presentation.slides, start=1):
 
-        detect_smart_art(slide, i) 
+        smart_art_detected = detect_smart_art(slide, i) 
 
         slide_number = i
 
@@ -68,6 +69,9 @@ def process(ppxt_filepath):
                             paragraph.text += post_http[i] + " "
 
                     notes_text += paragraph.text
+            
+            if smart_art_detected:
+                
 
             if "agenda" in title.lower():
                 slide_type = "Agenda"
@@ -93,7 +97,7 @@ def process(ppxt_filepath):
 
 
 def detect_smart_art(slide, i):
-
+    #this function detects if a slide contains smart art
     smart_art_tags = ["</p:graphicFrame>", "<p:grpSp>"]
     xml = slide._element.xml
     smart_art_detected = False

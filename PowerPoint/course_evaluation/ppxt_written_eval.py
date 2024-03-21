@@ -1,6 +1,6 @@
 from colorama import Fore
 from openai import OpenAI
-import ppxt_visual_eval
+import ppxt_vision
 
 def count_overused_words(df, common_generated_terms):
     # This function takes a dataframe and a list of common generated terms and returns the dataframe with the count of each term in the 'Slide Text' and 'Notes Text' columns   
@@ -92,11 +92,11 @@ def evaluate(df, api_key):
             
         elif slide_type == 'Content' and row['Slide Text'] == "":
             if i < 9:
-                response = ppxt_visual_eval.run('ppxt_images/slide_0'+str(i+1)+'.jpg', api_key)
+                response = ppxt_vision.run_slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg', api_key)
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
             else: 
-                response = ppxt_visual_eval.run('ppxt_images/slide_'+str(i+1)+'.jpg', api_key)
+                response = ppxt_vision.run_slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg', api_key)
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
         else:
