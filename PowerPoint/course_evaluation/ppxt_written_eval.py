@@ -116,7 +116,7 @@ def evaluate(df):
         #add the response to the column 'Response' in the df
         df.at[i, 'Response'] = response
         #print(response)
-        utils.print_loader_df(len(df), i)
+        utils.print_loader(len(df), i)
     print()
     print(f"{Fore.RED}---------------------Total Tokens Used: {total_tokens}---------------------{Fore.RESET}")
     print()
