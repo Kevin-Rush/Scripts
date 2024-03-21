@@ -13,7 +13,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def run_slide_eval(image_path):
+def slide_eval(image_path):
     # This function takes a folder of images and an API key and returns a list of responses from the GPT-4 Vision model
     print(image_path)
     prompt = "You are a powerpoint slide evaluator. Your job is to review the slide and provide feedback on the clarity, simplicity, and visual appeal of the slide. For clarity and simplicity I want you to tell me if the information being presented is given in a direct and pithy way that does not use any extravegant phrasing (extravegant phrasing includes but is not restricted to: 'delve', 'utilize', 'the art and science of', 'enter the world of', etc.). For visual appeal, I want you to tell me if the information on the slide is presented in an effective way. Ensure that you say 1 good thing about the slide, and then provide 3 specific and actionable pieces feedback. Keep responses short and direct yet professional and only consider the text I've given, do not think beyond the slide."

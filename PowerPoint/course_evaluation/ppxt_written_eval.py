@@ -96,11 +96,11 @@ def evaluate(df):
             
         elif slide_type == 'Content' and row['Slide Text'] == "":
             if i < 9:
-                response = ppxt_vision.run_slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg')
+                response = ppxt_vision.slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg')
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
             else: 
-                response = ppxt_vision.run_slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg')
+                response = ppxt_vision.slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg')
                 total_tokens += response['usage']["total_tokens"]
                 response = response['choices'][0]['message']['content']
         else:
