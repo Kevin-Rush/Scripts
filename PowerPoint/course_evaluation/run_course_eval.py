@@ -44,7 +44,7 @@ print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.
 # df = pd.read_csv(root + "ppxt_pre_eval.csv")
 
 print(f"{Fore.YELLOW}---------------------Evaluate the Deck---------------------{Fore.RESET}")
-df = ppxt_text.evaluate(df)
+df = ppxt_text.evaluate_slide_df(df)
 print(f"{Fore.GREEN}---------------------Evaluation Successful---------------------{Fore.RESET}")
 
 #run through all the images in the folder ppxt_images and delete them

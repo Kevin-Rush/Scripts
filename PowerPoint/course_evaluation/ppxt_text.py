@@ -15,7 +15,7 @@ def count_overused_words(df, common_generated_terms):
     return df
 
 
-def evaluate(df):
+def evaluate_slide_df(df):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model
 
     model = "gpt-4-0125-preview"
