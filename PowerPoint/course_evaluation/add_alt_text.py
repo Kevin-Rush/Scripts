@@ -1,3 +1,4 @@
+import glob
 import os
 import random
 from pptx import Presentation
@@ -31,6 +32,12 @@ def add_alt_text_to_image(ppxt_file, slide_index, alt_text):
             if not adec_decoratives:
                 if shape._element._nvXxPr.cNvPr.attrib.get("descr", "") == "":
                     shape._element._nvXxPr.cNvPr.attrib["descr"] = alt_text  # Set the alt text for the image
+            
+    #run through the folder alt_text_img and delete all the images
+    img_files = glob.glob(os.path.join("alt_text_img/", "*"))
+    for img_file in img_files:
+        os.remove(img_file)
+    
 
     # Save the modified presentation
     presentation.save(ppxt_file)
