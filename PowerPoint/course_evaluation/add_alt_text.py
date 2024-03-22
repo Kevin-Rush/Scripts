@@ -1,3 +1,5 @@
+import os
+import random
 from pptx import Presentation
 from pptx.oxml.ns import nsdecls, _nsmap
 
@@ -11,11 +13,16 @@ def add_alt_text_to_image(ppxt_file, slide_index, alt_text):
 
     # Iterate through all shapes in the slide
     for shape in slide.shapes:
+        print("slide_index: ", slide_index)
+        print("shape.shape_type: ", shape.shape_type)
         if shape.shape_type == 13:  # Check if the shape is an image
             #save the image to the local directory
             image = shape.image
             image_bytes = image.blob
             image_filename = f"alt_text_img/image_{slide_index}.png"
+            #check if the file name already exists
+            if os.path.exists(image_filename):
+                image_filename = f"alt_text_img/image_{slide_index}_{random.randint(0,1000)}.png"
             with open(image_filename, "wb") as f:
                 f.write(image_bytes)
 
