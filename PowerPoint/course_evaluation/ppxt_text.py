@@ -12,8 +12,7 @@ def count_overused_words(df, common_generated_terms):
     # This function takes a dataframe and a list of common generated terms and returns the dataframe with the count of each term in the 'Slide Text' and 'Notes Text' columns   
     for word in common_generated_terms:
         df[word] = df['Slide Text'].str.count(word) + df['Notes Text'].str.count(word)
-    return df
-
+    return df    
 
 def evaluate_slide_df(df):
     # This function takes a dataframe and an API key and returns a list of responses from the GPT-3.5 model

@@ -12,11 +12,17 @@ def add_alt_text_to_image(ppxt_file, slide_index, alt_text):
     # Iterate through all shapes in the slide
     for shape in slide.shapes:
         if shape.shape_type == 13:  # Check if the shape is an image
+            #save the image to the local directory
+            image = shape.image
+            image_bytes = image.blob
+            image_filename = f"alt_text_img/image_{slide_index}.png"
+            with open(image_filename, "wb") as f:
+                f.write(image_bytes)
+
             #check if an image is marked as decorative
             adec_decoratives = shape._element._nvXxPr.cNvPr.xpath(".//adec:decorative[@val='1']")
             if not adec_decoratives:
                 if shape._element._nvXxPr.cNvPr.attrib.get("descr", "") == "":
-                    print("START:"+shape._element._nvXxPr.cNvPr.attrib.get("descr", "")+":FINISH")
                     shape._element._nvXxPr.cNvPr.attrib["descr"] = alt_text  # Set the alt text for the image
 
     # Save the modified presentation
