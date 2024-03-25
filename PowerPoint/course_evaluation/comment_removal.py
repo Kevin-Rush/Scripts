@@ -14,9 +14,9 @@ def extract_comments_from_pptx(pptx_file, output_file):
             # Loop through each author's comments
             for comment in author.comments:
                 # Access comment properties
-                print(f"Comment by {author.name}: {comment.text}")
+                print(f"Comment by {author.name}, at {comment.created_time}: {comment.text}")
                 # Write the comment to the output file
-                file.write(f"Comment by {author.name}: {comment.text}\n")
+                file.write(f"Comment by {author.name}, at {comment.created_time}: {comment.text}\n")
 
             author.comments.clear()
 
