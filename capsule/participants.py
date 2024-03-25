@@ -53,18 +53,22 @@ for id in party_ids:
         print(f'Request failed with status code {response.status_code}')
     data = response.json()
     print(data)
-    if data['party']['type'] != 'organization':
+    if data['party']['type'] != 'organisation':
         df_temp = pd.DataFrame([data['party']])
         df = df.append(df_temp, ignore_index=True)
     # print(df.columns)
     # print(df.head(1))
 #save first name, last name, and email to a csv file
 
-df = df[['firstName', 'lastName', 'emailAddresses']]
+df = df[['id', 'firstName', 'lastName', 'organisation', 'emailAddresses']]
 print(df.head())
 for i in range(len(df['emailAddresses'])):
     if df['emailAddresses'][i] != []:
         df['emailAddresses'][i] = df['emailAddresses'][i][0]["address"]
+
+for i in range(len(df['organisation'])):
+    if df['organisation'][i] != None:
+        df['organisation'][i] = df['organisation'][i]["name"]
 print(df.head())
 
 df.to_csv('participants.csv', index=False)
