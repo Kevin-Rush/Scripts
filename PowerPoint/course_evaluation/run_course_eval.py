@@ -8,17 +8,13 @@ from colorama import Fore, Style
 import pandas as pd
 import os
 
-with open("C:/Users/kevin/Documents/Coding/Scripts/sapling_api_key.txt", "r") as file:
-    sapling_api_key = file.read()
+ppxt_file_glob = glob.glob(r'ENTER_PPXT_FILE_PATH_HERE')
+
+output_file = "extracted_script.txt"
+root = "ENTER_THE_ROOT_PATH_HERE"
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/common_generated_terms.txt", "r") as file:
     common_generated_terms = file.read().splitlines()
-
-
-ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Week 06.pptx')
-
-output_file = "extracted_script.txt"
-root = "C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/"
 
 print(f"{Fore.RESET}Start")
 
@@ -26,7 +22,6 @@ print(f"{Fore.YELLOW}---------------------Create Slide Images-------------------
 convert_slides_to_pdf_to_image.run(ppxt_file_glob, root)
 print(f"{Fore.GREEN}---------------------Image Creation Successful---------------------{Fore.RESET}")
 
-#grammar_eval.evaluate(ppxt_file_glob[0], sapling_api_key)
 #print(f"{Fore.GREEN}---------------------Grammar Eval---------------------{Fore.RESET}")
 df = ppxt_processor.process(ppxt_file_glob[0])
 print(f"{Fore.GREEN}---------------------Slide Deck Contents Saved in DataFrame---------------------{Fore.RESET}")
