@@ -34,7 +34,7 @@ def remove_aspose_watermark(pptx_file):
                 for paragraph in shape.text_frame.paragraphs:
                     paragraph_text = "".join(run.text for run in paragraph.runs)
                     # Check if the paragraph text contains the Aspose watermark
-                    if "Aspose" in paragraph_text:
+                    if "Created with Aspose.Slides for Python" in paragraph_text:
                         print("Found Aspose watermark")
                         # Remove the Aspose watermark
                         found = True
