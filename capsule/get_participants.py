@@ -5,40 +5,20 @@ import pandas as pd
 with open("capsule_api_key.txt", "r") as file:
     api_token = file.read()
 
+def internal_email_check(email):
+    #read a file of internal email addresses and check if email matches any
+    with open("internal_emails.txt", "r") as file:
+        internal_emails = file.read().splitlines()
+    email = email.split('@')[1]
+    if email in internal_emails:
+        print(f"Internal email found: {email}")
+        return True
+    return False
 
 headers = {
     'Authorization': f'Bearer {api_token}',
     'Accept': 'application/json'
 }
-
-# success = True
-# i = 1
-# df = pd.DataFrame()
-# while success == True:
-
-# url = f'https://api.capsulecrm.com/api/v2/parties'
-# print(url)
-# i += 1
-
-# response = requests.get(url, headers=headers)
-
-# if response.status_code != 200:
-#     print(f'Request failed with status code {response.status_code}')
-#     # success = False
-
-# print('Successful Request')
-# data = response.json()
-# #print(data)
-
-
-# #add the extracted json to the df
-# df = pd.DataFrame(data['parties'])
-# # print(len(df))
-
-#print the comolumns in the df
-#print(df.columns)
-
-# print(df.head(-1))
 
 #read the party_ids.txt file and create a list of party ids
 with open("party_ids.txt", "r") as file:
@@ -53,9 +33,15 @@ for id in party_ids:
         print(f'Request failed with status code {response.status_code}')
     data = response.json()
     print(data)
-    if data['party']['type'] != 'organisation':
-        df_temp = pd.DataFrame([data['party']])
-        df = df.append(df_temp, ignore_index=True)
+if data['party']['type'] != 'organisation':
+        if data['party']['emailAddresses'] != []:
+            email = data['party']['emailAddresses'][0]['address']
+            if not internal_email_check(email):
+                df_temp = pd.DataFrame([data['party']])
+                df = df.append(df_temp, ignore_index=True)
+        else:
+            df_temp = pd.DataFrame([data['party']])
+            df = df.append(df_temp, ignore_index=True)
     # print(df.columns)
     # print(df.head(1))
 #save first name, last name, and email to a csv file
