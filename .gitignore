@@ -1,3 +1,6 @@
+.env
+OAI_CONFIG_LIST
+
 *.png
 *.csv
 *.pdf
@@ -9,9 +12,10 @@
 *api_key*.txt
 *email*.txt
 
-ppxt_images/
 *script.txt
 *script.json
-scripts/
-__pycache__/
 *credentials.txt
+
+ppxt_images/
+scripts/    
+__pycache__/
