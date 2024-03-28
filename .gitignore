@@ -6,15 +6,12 @@ OAI_CONFIG_LIST
 *.pdf
 *.pptx
 *.xml
+*.txt
 
 *output*
 *cleaned*
-*api_key*.txt
-*email*.txt
 
-*script.txt
 *script.json
-*credentials.txt
 
 ppxt_images/
 scripts/    
