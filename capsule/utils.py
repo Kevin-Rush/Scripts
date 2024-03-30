@@ -1,25 +1,25 @@
 import csv
 
-def extract_emails(file_path):
-    emails = []
-    i = 0
-    with open(file_path, 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            print(i)
-            print(row[2])
-            if row[0] != "" and row[2] != 'emailAddresses':
-                emails.append(process_emailAddress_entry(row[2]))  # Assuming email is in the third column (index 2)
-            i += 1
+# def extract_emails(file_path):
+#     emails = []
+#     i = 0
+#     with open(file_path, 'r') as file:
+#         reader = csv.reader(file)
+#         for row in reader:
+#             print(i)
+#             print(row[2])
+#             if row[0] != "" and row[2] != 'emailAddresses':
+#                 emails.append(process_emailAddress_entry(row[2]))  # Assuming email is in the third column (index 2)
+#             i += 1
                 
-    return emails
+#     return emails
 
-def process_emailAddress_entry(str):
-    #remove all text prior to the @ symbol
-    str = str.split('@')[1]
-    #remove all text after a '
-    str = str.split('\'')[0]
-    return str
+# def process_emailAddress_entry(str):
+#     #remove all text prior to the @ symbol
+#     str = str.split('@')[1]
+#     #remove all text after a '
+#     str = str.split('\'')[0]
+#     return str
 
 def remove_duplicates(var_list):
     #remove duplicates in the list
@@ -44,14 +44,14 @@ with open('orgs.txt', 'w') as file:
         if org is not None:
             file.write(org + '\n')
 
-file_path = 'participants.csv' 
-emails = extract_emails(file_path)
-print(emails)
+# file_path = 'participants.csv' 
+# # emails = extract_emails(file_path)
+# print(emails)
 
-emails = remove_duplicates(emails)
+# emails = remove_duplicates(emails)
 
-#save emails to a text file
-with open('emails.txt', 'w') as file:
-    for email in emails:
-        if email is not None:
-            file.write(email + '\n')
+# #save emails to a text file
+# with open('emails.txt', 'w') as file:
+#     for email in emails:
+#         if email is not None:
+#             file.write(email + '\n')
