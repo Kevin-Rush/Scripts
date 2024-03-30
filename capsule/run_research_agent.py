@@ -240,7 +240,7 @@ orgs.pop(0)
 for i in orgs:
     print(f"{Fore.YELLOW}---------------------Searching for {i}---------------------{Fore.RESET}")
     print(i)
-    message = f"Research for student or community projects, initiatives, or any positive story from {i} in the field of AI."
+    message = f"Research for student or community projects, initiatives, or any positive story from {i} in the field of AI. But only report stories from 2023 or 2024"
 
     user_proxy.initiate_chat(group_chat_manager, message=message)
     print(f"{Fore.GREEN}---------------------Search for {i} Complete---------------------{Fore.RESET}")
