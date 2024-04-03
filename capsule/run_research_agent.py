@@ -114,6 +114,7 @@ def selinium_scrape(url):
     print(f"{Fore.GREEN}Current URL:", current_url, f"{Fore.RESET}")
     with open("searched_urls.txt", "a", encoding='utf-8') as f:
             f.write(current_url)
+            f.write("\n")
 
     page_content = driver.page_source
 
