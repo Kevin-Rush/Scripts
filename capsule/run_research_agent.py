@@ -115,10 +115,6 @@ def selinium_scrape(url):
 
     page_content = driver.page_source
 
-    #write page_content to a file
-    with open("page_content.txt", "a", encoding='utf-8') as f:
-        f.write(page_content)
-
     driver.quit()
 
     return page_content
@@ -237,6 +233,7 @@ orgs = find_orgs("contacts-2024-03-25.csv")
 #drop first element
 orgs.pop(0)
 
+
 for i in orgs:
     print(f"{Fore.YELLOW}---------------------Searching for {i}---------------------{Fore.RESET}")
     print(i)
@@ -244,4 +241,4 @@ for i in orgs:
 
     user_proxy.initiate_chat(group_chat_manager, message=message)
     print(f"{Fore.GREEN}---------------------Search for {i} Complete---------------------{Fore.RESET}")
-    break
+    
