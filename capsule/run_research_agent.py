@@ -129,41 +129,41 @@ def clean_soup_text(text):
     text = " ".join(text.split())
     return text
 
-# Function for get airtable records
-def get_airtable_records(base_id, table_id):
-    url = f"https://api.airtable.com/v0/{base_id}/{table_id}"
+# # Function for get airtable records
+# def get_airtable_records(base_id, table_id):
+#     url = f"https://api.airtable.com/v0/{base_id}/{table_id}"
 
-    headers = {
-        'Authorization': f'Bearer {airtable_api_key}',
-    }
+#     headers = {
+#         'Authorization': f'Bearer {airtable_api_key}',
+#     }
 
-    response = requests.request("GET", url, headers=headers)
-    print(f"{Fore.GREEN}---------------------Airtable Response---------------------{Fore.RESET}")
-    data = response.json()
-    print(data)
-    return data
+#     response = requests.request("GET", url, headers=headers)
+#     print(f"{Fore.GREEN}---------------------Airtable Response---------------------{Fore.RESET}")
+#     data = response.json()
+#     print(data)
+#     return data
 
 
-# # Function for update airtable records
+# # # Function for update airtable records
 
-def update_single_airtable_record(base_id, table_id, id, fields):
-    url = f"https://api.airtable.com/v0/{base_id}/{table_id}"
+# def update_single_airtable_record(base_id, table_id, id, fields):
+#     url = f"https://api.airtable.com/v0/{base_id}/{table_id}"
 
-    headers = {
-        'Authorization': f'Bearer {airtable_api_key}',
-        "Content-Type": "application/json"
-    }
+#     headers = {
+#         'Authorization': f'Bearer {airtable_api_key}',
+#         "Content-Type": "application/json"
+#     }
 
-    data = {
-        "records": [{
-            "id": id,
-            "fields": fields
-        }]
-    }
+#     data = {
+#         "records": [{
+#             "id": id,
+#             "fields": fields
+#         }]
+#     }
 
-    response = requests.patch(url, headers=headers, data=json.dumps(data))
-    data = response.json()
-    return data
+#     response = requests.patch(url, headers=headers, data=json.dumps(data))
+#     data = response.json()
+#     return data
 
 
 # ------------------ Create agent ------------------ #
@@ -171,7 +171,7 @@ def update_single_airtable_record(base_id, table_id, id, fields):
 # Create user proxy agent
 user_proxy = UserProxyAgent(name="user_proxy",
     is_termination_msg=lambda msg: "TERMINATE" in msg["content"],
-    human_input_mode="ALWAYS",
+    human_input_mode="NEVER",
     max_consecutive_auto_reply=1
     )
 
@@ -201,21 +201,21 @@ research_manager = GPTAssistantAgent(
 )
 
 
-# Create director agent
-director = GPTAssistantAgent(
-    name = "director",
-    llm_config = {
-        "config_list": config_list,
-        "assistant_id": "asst_7QUrlJsRwLo4aEAPh8ijYI2R",
-    }
-)
+# # Create director agent
+# director = GPTAssistantAgent(
+#     name = "director",
+#     llm_config = {
+#         "config_list": config_list,
+#         "assistant_id": "asst_7QUrlJsRwLo4aEAPh8ijYI2R",
+#     }
+# )
 
-director.register_function(
-    function_map={
-        "get_airtable_records": get_airtable_records,
-        "update_single_airtable_record": update_single_airtable_record
-    }
-)
+# director.register_function(
+#     function_map={
+#         "get_airtable_records": get_airtable_records,
+#         "update_single_airtable_record": update_single_airtable_record
+#     }
+# )
 
 
 # Create group chat
@@ -242,6 +242,7 @@ for i in orgs:
     print(i)
     message = f"Research for student or community projects, initiatives, or any positive story from {i} in the field of AI. But only report stories from 2023 or 2024"
 
-    user_proxy.initiate_chat(group_chat_manager, message=message)
+    user_proxy.initiate_chat(group_chat_manager, clear_history=True, message=message, silent=False)
+
     print(f"{Fore.GREEN}---------------------Search for {i} Complete---------------------{Fore.RESET}")
     
