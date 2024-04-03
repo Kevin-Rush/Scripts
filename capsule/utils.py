@@ -21,9 +21,17 @@ import csv
 #     str = str.split('\'')[0]
 #     return str
 
-def remove_duplicates(var_list):
-    #remove duplicates in the list
-    return list(set(var_list))   
+def remove_duplicates_list(input):
+    #check the datatype of the variable
+    if type(input) == list:
+        return list(set(input))
+    elif type(input) == str:
+        if ".txt" in input:
+            with open(input, 'r') as file:
+                lines = file.readlines()
+                return list(set(lines))
+    else:
+        return input
     
 def find_orgs(file):
     orgs = []
