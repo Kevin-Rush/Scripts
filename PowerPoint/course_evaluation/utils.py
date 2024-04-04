@@ -7,3 +7,11 @@ def print_loader (length, i):
     print(f"\r[{loading_bar}] {percentage}%", end='')
     if percentage == 100:
         print()
+
+def clean_filename(filename):
+    #clean a filename to remove any special characters
+    if "[Slides] " in filename:
+        filename = filename.replace("[Slides] ", "")
+    if " (1)" in filename:
+        filename = filename.replace(" (1)", "")
+    return filename
