@@ -1,11 +1,13 @@
 import os
-from ppxt_processor import process
 
-def process_ppxt_files(repository_path):
-    output_file = "output.txt"
+from colorama import Fore
+from ppxt_processor import process
+import utils
+import pandas as pd
+
+def process_ppxt_folder(repository_path, output_file):
+    
     # Get all ppxt files in the repository
-    ppxt_files = [file for file in os.listdir(repository_path) if file.endswith(".pptx")]
-    print(ppxt_files)
     
     with open(output_file, "w", encoding='utf-8') as f:
 
@@ -23,9 +25,12 @@ def process_ppxt_files(repository_path):
                 f.write(f"Notes Text: {row['Notes Text']}\n")
                 f.write("\n")
 
-
     print(f"All ppxt files processed. Output saved to {output_file}.")
 
-repository_path = "C:/Users/kevin/Downloads/OneDrive_2024-02-29"
+output_file = "output.txt"
+repository_path = "C:/Users/kevin/Downloads/IGAI Course"
 
-process_ppxt_files(repository_path)
+ppxt_files = [file for file in os.listdir(repository_path) if file.endswith(".pptx")]
+# print(ppxt_files)
+
+process_ppxt_folder(ppxt_files)

@@ -2,6 +2,7 @@ from colorama import Fore
 from openai import OpenAI
 import ppxt_vision
 import utils
+import pandas as pd
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
     gpt_api_key = file.read()

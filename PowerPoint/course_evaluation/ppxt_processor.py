@@ -6,6 +6,19 @@ from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
 import ppxt_vision
 
+def get_formatting(ppxt_filepath, output_file):
+    df = pd.DataFrame(columns=['Font', 'Size', 'Colour', 'Bold', 'Italics', 'Underline'])
+    ppxt_file = Presentation(ppxt_filepath)
+
+    print(f"{Fore.GREEN}---------------------Checking Formatting---------------------{Fore.RESET}")
+    for slide in ppxt_file.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                for paragraph in shape.text_frame.paragraphs:
+                    for run in paragraph.runs:
+                        df = df.append({'Font': run.font.name, 'Size': run.font.size, 'Colour': run.font.color.rgb, 'Bold': run.font.bold, 'Italics': run.font.italic, 'Underline': run.font.underline}, ignore_index=True)
+                        print(f"Font: {run.font.name}, 'Size': {run.font.size}, 'Colour': {run.font.color.rgb}, Bold: {run.font.bold}, Italic: {run.font.italic}, Underline: {run.font.underline}")
+    return df
 
 def process(ppxt_filepath):
     #this function processes a PowerPoint file and returns a dataframe with the slide number, title, slide text, and notes text
