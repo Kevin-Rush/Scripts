@@ -7,7 +7,7 @@ from PIL import Image as PilImage
 import numpy as np
 import utils
 
-def ppxt_to_pdf(files, root, formatType = 32):
+def ppxt_to_pdf(files, formatType = 32):
     # Convert ppxt to PDF using win32com
     powerpoint = win32com.client.Dispatch("Powerpoint.Application")
     powerpoint.Visible = 1
@@ -53,7 +53,7 @@ def pdf_to_images(pdf_file, output_folder):
 def run(ppxt_file, root):
     # Convert ppxt to PDF to images
     print(f"{Fore.YELLOW}---------------------Convert to PDF---------------------{Fore.RESET}")
-    ppxt_to_pdf(ppxt_file, root)
+    ppxt_to_pdf(ppxt_file)
     print(f"{Fore.YELLOW}---------------------Save Images---------------------{Fore.RESET}")
 
     #Note to self, need to make the folder creation and tracking more robust. Right now this is dependent on the folder existing and the script being run from within the PowerPoint parent folder
