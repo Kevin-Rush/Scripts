@@ -25,7 +25,8 @@ def evaluate_slide_df(df):
 
     #iterate over the dataframe
     print(f"{Fore.GREEN}---------------------Evaluation has Started---------------------{Fore.RESET}")
-    total_tokens = 0
+    prompt_tokens = 0
+    completion_tokens = 0
     for i, row in df.iterrows():
         
         messages_highview = [
@@ -51,7 +52,8 @@ def evaluate_slide_df(df):
                 messages=messages_highview,
             )
             messages_highview.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
         
         elif slide_type == 'Agenda':
@@ -61,7 +63,8 @@ def evaluate_slide_df(df):
                 messages=messages_highview,
             )
             messages_highview.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
         
         elif slide_type == 'Transition':
@@ -71,7 +74,8 @@ def evaluate_slide_df(df):
                 messages=messages_highview,
             )
             messages_highview.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
         
         elif slide_type == 'Discussion':
@@ -81,7 +85,8 @@ def evaluate_slide_df(df):
                 messages=messages_activity,
             )
             messages_activity.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
         
         elif slide_type == 'Activity':
@@ -91,17 +96,20 @@ def evaluate_slide_df(df):
                 messages=messages_activity,
             )
             messages_activity.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
             
         elif row['Smart Art Detected']:
             if i < 9:
                 response = ppxt_vision.slide_eval('ppxt_images/slide_0'+str(i+1)+'.jpg')
-                total_tokens += response['usage']["total_tokens"]
+                prompt_tokens += response['usage']["prompt_tokens"]
+                completion_tokens += response['usage']["completion_tokens"]
                 response = response['choices'][0]['message']['content']
             else: 
                 response = ppxt_vision.slide_eval('ppxt_images/slide_'+str(i+1)+'.jpg')
-                total_tokens += response['usage']["total_tokens"]
+                prompt_tokens += response['usage']["prompt_tokens"]
+                completion_tokens += response['usage']["completion_tokens"]
                 response = response['choices'][0]['message']['content']
         else:
             messages_lowview.append({"role": "user", "content": "Hello, can you please evaluate my content slide? Slide Title: " + "Hello, can you please evaluate my content slide? Slide Title: " + str(row['Title']) + " Slide Contents: " + str(row['Slide Text']) + " Slide Notes: " + str(row['Notes Text'])})
@@ -110,7 +118,8 @@ def evaluate_slide_df(df):
                 messages=messages_lowview,
             )
             messages_lowview.pop()
-            total_tokens += response.usage.total_tokens
+            prompt_tokens += response.usage.prompt_tokens
+            completion_tokens += response.usage.completion_tokens
             response = response.choices[0].message.content
 
         #add the response to the column 'Response' in the df
@@ -118,7 +127,9 @@ def evaluate_slide_df(df):
         #print(response)
         utils.print_loader(len(df), i)
     print()
-    print(f"{Fore.RED}---------------------Total Tokens Used: {total_tokens}---------------------{Fore.RESET}")
+    print(f"{Fore.RED}---------------------Total Prompt Tokens: {prompt_tokens}---------------------{Fore.RESET}")
+    print(f"{Fore.RED}---------------------Total Completion Tokens: {completion_tokens}---------------------{Fore.RESET}")
+    print(f"{Fore.RED}---------------------Total Tokens Used: {prompt_tokens + completion_tokens}---------------------{Fore.RESET}")
     print()
 
     return df
