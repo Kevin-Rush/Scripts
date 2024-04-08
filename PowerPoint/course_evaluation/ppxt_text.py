@@ -126,6 +126,10 @@ def evaluate_slide_df(df):
         df.at[i, 'Response'] = response
         #print(response)
         utils.print_loader(len(df), i)
+    
+    with open("token_logs.txt", "a") as f:
+        f.write(f"Total Prompt Tokens: {prompt_tokens}\nTotal Completion Tokens: {completion_tokens}\nTotal Tokens Used: {prompt_tokens + completion_tokens}")
+
     print()
     print(f"{Fore.RED}---------------------Total Prompt Tokens: {prompt_tokens}---------------------{Fore.RESET}")
     print(f"{Fore.RED}---------------------Total Completion Tokens: {completion_tokens}---------------------{Fore.RESET}")
