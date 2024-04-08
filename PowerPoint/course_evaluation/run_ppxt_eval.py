@@ -86,7 +86,9 @@ if single_ppxt:
 else:
     #run through an entire folder of ppxt files
     ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\M4AI\*.pptx')
-    file_name = ppxt_file_glob[0].split("\\")[-1]
+    k = 0
     for i in ppxt_file_glob:
+        file_name = ppxt_file_glob[k].split("\\")[-1]
         run_eval([i], file_name)
+        k += 1
     

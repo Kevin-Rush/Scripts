@@ -17,6 +17,7 @@ def ppxt_to_pdf(files, formatType = 32):
         newname = os.path.splitext(filename)[0] + ".pdf"
         print("Newname: ", newname)
         deck = powerpoint.Presentations.Open(filename)
+
         deck.SaveAs(newname, formatType)
         deck.Close()
     powerpoint.Quit()
