@@ -16,7 +16,8 @@ def get_formatting(ppxt_filepath, output_file):
             if shape.has_text_frame:
                 for paragraph in shape.text_frame.paragraphs:
                     for run in paragraph.runs:
-                        df = df.append({'Font': run.font.name, 'Size': run.font.size, 'Colour': run.font.color.rgb, 'Bold': run.font.bold, 'Italics': run.font.italic, 'Underline': run.font.underline}, ignore_index=True)
+                        # df = df.concat({'Font': run.font.name, 'Size': run.font.size, 'Colour': run.font.color.rgb, 'Bold': run.font.bold, 'Italics': run.font.italic, 'Underline': run.font.underline}, ignore_index=True)
+                        df = pd.concat({'Font': run.font.name, 'Size': run.font.size, 'Colour': run.font.color.rgb, 'Bold': run.font.bold, 'Italics': run.font.italic, 'Underline': run.font.underline}, ignore_index=True)
                         print(f"Font: {run.font.name}, 'Size': {run.font.size}, 'Colour': {run.font.color.rgb}, Bold: {run.font.bold}, Italic: {run.font.italic}, Underline: {run.font.underline}")
     return df
 
@@ -103,7 +104,8 @@ def process(ppxt_filepath):
             else:
                 slide_type = "Content"
         #add slide 
-        df = df.append({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text, 'Smart Art Detected': smart_art_detected}, ignore_index=True)
+        # df = df.concat({'Slide Number': slide_number, 'Slide Type': slide_type, 'Title': title, 'Subtitle': subtitle, 'Slide Text': slide_text, 'Notes Text': notes_text, 'Smart Art Detected': smart_art_detected}, ignore_index=True)
+        df = pd.concat([df, pd.DataFrame({'Slide Number': [slide_number], 'Slide Type': [slide_type], 'Title': [title], 'Subtitle': [subtitle], 'Slide Text': [slide_text], 'Notes Text': [notes_text], 'Smart Art Detected': [smart_art_detected]})], ignore_index=True)
         print(f"{Fore.GREEN}---------------------Processing Complete---------------------{Fore.RESET}")
         utils.print_loader(len(df), i)
 
