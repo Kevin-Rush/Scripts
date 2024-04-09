@@ -1,5 +1,9 @@
 import smtplib
 import pandas as pd
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def replace_name(message, email):
     #load the csv file participants.csv as a df
@@ -18,7 +22,7 @@ def replace_college(message, email):
 
 # Email credentials
 sender_email = 'kevin@sustainablelivinglab.org'
-sender_app_password = 'czoe yrum xltd abhr'
+sender_app_password = os.getenv("google_app_password")
 
 # Read emails from file
 print("For safety this script has been ended early.")
