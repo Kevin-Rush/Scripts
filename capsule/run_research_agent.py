@@ -1,5 +1,3 @@
-from utils import find_orgs
-
 import os
 from colorama import Fore
 import requests
@@ -19,9 +17,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
+from langchain_community.callbacks import get_openai_callback
+from langchain_openai import OpenAI
 
 
 load_dotenv()
+os.environ['AUTOGEN_USE_DOCKER'] = '0'
 #brwoserless_api_key = os.getenv("BROWSERLESS_API_KEY")
 serper_api_key = os.getenv("SERP_API_KEY")
 airtable_api_key = os.getenv("AIRTABLE_API_KEY")
@@ -172,12 +173,13 @@ def clean_soup_text(text):
 user_proxy = UserProxyAgent(name="user_proxy",
     is_termination_msg=lambda msg: "TERMINATE" in msg["content"],
     human_input_mode="NEVER",
-    max_consecutive_auto_reply=1
+    max_consecutive_auto_reply=1,
     )
 
 # Create researcher agent
 researcher = GPTAssistantAgent(
     name = "researcher",
+    description = "Researcher agent",
     llm_config = {
         "config_list": config_list,
         "assistant_id": "asst_Nt9WR0jReC1JgQ88fYJEjwAg"
@@ -194,6 +196,7 @@ researcher.register_function(
 # Create research manager agent
 research_manager = GPTAssistantAgent(
     name="research_manager",
+    description="Research manager agent",
     llm_config = {
         "config_list": config_list,
         "assistant_id": "asst_Qn0WmtmBn6gl9eJRursaWfrX"
@@ -231,11 +234,12 @@ group_chat_manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={"
 # Research to find the status of all AI programs for the community colleges in the list: https://airtable.com/appXWlxTsOhTOixhx/tblFNR8gRkGun5Ky6/viwxUWeJGthCmyIv9?blocks=hide
 # """
 
-orgs = find_orgs("contacts-2024-03-25.csv")
+#read a text file
+with open("orgs.txt", "r") as file:
+    orgs = [line.strip() for line in file]
 
-#drop first element
+#remove the first element in orgs
 orgs.pop(0)
-
 
 for i in orgs:
     print(f"{Fore.YELLOW}---------------------Searching for {i}---------------------{Fore.RESET}")
@@ -243,6 +247,12 @@ for i in orgs:
     message = f"Research for student or community projects, initiatives, or any positive story from {i} in the field of AI. But only report stories from 2023 or 2024"
 
     user_proxy.initiate_chat(group_chat_manager, clear_history=True, message=message, silent=False)
-
+ 
     print(f"{Fore.GREEN}---------------------Search for {i} Complete---------------------{Fore.RESET}")
-    
+
+#create a copy of log.txt
+with open("log.txt", "r") as file:
+    log = file.read()
+
+with open("log_copy.txt", "a") as f:
+    f.write(log)
