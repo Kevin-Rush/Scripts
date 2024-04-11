@@ -12,6 +12,48 @@ client = OpenAI()
 client.api_key = gpt_api_key
 model = "gpt-4-0125-preview"
 
+
+def convert_college_info_to_json(file):
+    # this function takes in a text file and converts the text into a json object. Each entry in the json object is a dictionary with the following: category, college_name, infor_url, and info_text
+    json_data = []
+    with open(file, 'r') as file:
+        lines = file.read().split('Complete---------------------')
+        messages = [
+            {"role": "system", "content": "You are a helpful AI assistant that specializes in clerical tasks such as understanding notes, pulling out key information, and classifying notes. You are currently working in the office of a private company supporting colleges and is trying to keep track of news about the colleges they work with. Therefore, with the wide variety of news stories that you may come across you need to categorize the information as simply as possible, ideally with a single word such as Grant, Event, or Research. These are just examples and you are NOT limited to these 3 options. Please fullfill the needs of the user as best as you can!"},
+        ]
+#You are a helpful assistant that generates quiz questions based on a topic. Respond with one short question and three plausible options/answers, of which only one is correct. Provide your answer in JSON structure like this {"topic": "<The topic of the quiz>", "question": "<The quiz question you generate>", "options": {"option1": {"body": "<Plausible option 1>", "isItCorrect": <true or false>}, "option2": {"body": "<Plausible option 2>", "isItCorrect": <true or false>}, "option3": {"body": "<Plausible option 3>", "isItCorrect": <true or false>}}}
+
+        for line in lines:
+            messages.append({"role": "user", "content": "I'm going to pass you a lengthy note I've made about a college. I need you to provide a JSON object with the following keys: category, college_name, info_url, info_text, and potential action items. You will need to assign the value for category that you think best suits the note. For college name and URL you will find in the note and just need to return that information. As for the info_text, you should return all of the ORIGINAL text that was provided. As for the final entry, potential action items, I need you to return a list of potential follow up actions we can take to . Here is the note:" + line})
+            response = client.chat.completions.create(
+                model=model,
+                response_format={"type": "json_object"},
+                messages=messages
+            )
+
+            result = json.loads(response.choices[0].message.content)
+
+            print("Processed: ", result["college_name"])
+            json_data.append(result)
+    return json_data
+
+json_file = convert_college_info_to_json('organized_college_stories.txt')
+# Save json_file as a file
+with open('new_college_stories.json', 'w') as file:
+    json.dump(json_file, file, indent=4)
+    
+exit()
+
+def json_to_csv(json_file):
+    # this function takes in a json file and converts the json object into a csv file
+    with open(json_file, 'r') as file:
+        json_data = json.load(file)
+        with open('AI4WF_stories.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(json_data[0].keys())
+            for entry in json_data:
+                writer.writerow(entry.values())
+
 def process_log(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         #read the file line by line
@@ -25,47 +67,6 @@ def process_log(file_path):
     with open(new_file_path, 'w', encoding='utf-8') as new_file:
         for line in lines:
             new_file.write(line)
-
-process_log('log copy.txt')
-exit()
-
-def json_to_csv(json_file):
-    # this function takes in a json file and converts the json object into a csv file
-    with open(json_file, 'r') as file:
-        json_data = json.load(file)
-        with open('AI4WF_stories.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(json_data[0].keys())
-            for entry in json_data:
-                writer.writerow(entry.values())
-
-#send the file story_highlights.json to the function json_to_csv
-json_to_csv('story_highlights.json')
-
-
-def clean_notable_college_info(file):
-    # this function takes in a text file and converts the text into a json object. Each entry in the json object is a dictionary with the following: category, college_name, infor_url, and info_text
-    json_data = []
-    with open(file, 'r') as file:
-        lines = file.read().split('\n\n\n\n')
-        messages = [
-            {"role": "system", "content": "You are a helpful AI assistant that specializes in clerical tasks such as classifying notes. You are given quick notes with various pieces of information and your responsibility is to fullfill the actions demanded of you by the user."},
-        ]
-#You are a helpful assistant that generates quiz questions based on a topic. Respond with one short question and three plausible options/answers, of which only one is correct. Provide your answer in JSON structure like this {"topic": "<The topic of the quiz>", "question": "<The quiz question you generate>", "options": {"option1": {"body": "<Plausible option 1>", "isItCorrect": <true or false>}, "option2": {"body": "<Plausible option 2>", "isItCorrect": <true or false>}, "option3": {"body": "<Plausible option 3>", "isItCorrect": <true or false>}}}
-
-        for line in lines:
-            messages.append({"role": "user", "content": "I'm going to pass you a quick note I've made about a college. I need you to provide a JSON object with the following keys: category, college_name, info_url, info_text, and potential action items. You will need to assign the value for category that you think best suits the note. For college name and URL you will find in the note and just need to return that information. As for the info_text, you should return all of the ORIGINAL text that was provided. As for the final entry, potential action items, I need you to return a list of potential follow up actions we can take to . Here is the note:" + line})
-            response = client.chat.completions.create(
-                model=model,
-                response_format={"type": "json_object"},
-                messages=messages
-            )
-
-            result = json.loads(response.choices[0].message.content)
-
-            print("Processed: ", result["college_name"])
-            json_data.append(result)
-    return json_data
 
 # json_data = clean_notable_college_info('notable_college_info.txt')
 # #write json_data to a file
