@@ -12,6 +12,37 @@ client = OpenAI()
 client.api_key = gpt_api_key
 model = "gpt-4-0125-preview"
 
+def process_log(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        #read the file line by line
+        lines = file.readlines()
+        lines = [line for line in lines if not line.startswith('RESPONSE: {"searchParameters"')]
+        lines = [line for line in lines if line != 'TERMINATE\n']
+        lines = [line for line in lines if line != '--------------------------------------------------------------------------------']
+        lines = [line for line in lines if line != '\n']
+    
+    new_file_path = 'new_file.txt'
+    with open(new_file_path, 'w', encoding='utf-8') as new_file:
+        for line in lines:
+            new_file.write(line)
+
+process_log('log copy.txt')
+exit()
+
+def json_to_csv(json_file):
+    # this function takes in a json file and converts the json object into a csv file
+    with open(json_file, 'r') as file:
+        json_data = json.load(file)
+        with open('AI4WF_stories.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(json_data[0].keys())
+            for entry in json_data:
+                writer.writerow(entry.values())
+
+#send the file story_highlights.json to the function json_to_csv
+json_to_csv('story_highlights.json')
+
+
 def clean_notable_college_info(file):
     # this function takes in a text file and converts the text into a json object. Each entry in the json object is a dictionary with the following: category, college_name, infor_url, and info_text
     json_data = []
@@ -36,12 +67,11 @@ def clean_notable_college_info(file):
             json_data.append(result)
     return json_data
 
-json_data = clean_notable_college_info('notable_college_info.txt')
-#write json_data to a file
-with open('notable_college_info.json', 'w') as file:
-    json.dump(json_data, file, indent=4)
+# json_data = clean_notable_college_info('notable_college_info.txt')
+# #write json_data to a file
+# with open('notable_college_info.json', 'w') as file:
+#     json.dump(json_data, file, indent=4)
 
-exit()
 
 def clean_log(file):
     # read and write to a file
