@@ -12,11 +12,12 @@ client = OpenAI()
 client.api_key = gpt_api_key
 model = "gpt-4-0125-preview"
 
+exit()
 
 def convert_college_info_to_json(file):
     # this function takes in a text file and converts the text into a json object. Each entry in the json object is a dictionary with the following: category, college_name, infor_url, and info_text
     json_data = []
-    with open(file, 'r') as file:
+    with open(file, 'r', encoding='utf-8') as file:
         lines = file.read().split('Complete---------------------')
         messages = [
             {"role": "system", "content": "You are a helpful AI assistant that specializes in clerical tasks such as understanding notes, pulling out key information, and classifying notes. You are currently working in the office of a private company supporting colleges and is trying to keep track of news about the colleges they work with. Therefore, with the wide variety of news stories that you may come across you need to categorize the information as simply as possible, ideally with a single word such as Grant, Event, or Research. These are just examples and you are NOT limited to these 3 options. Please fullfill the needs of the user as best as you can!"},
@@ -39,10 +40,9 @@ def convert_college_info_to_json(file):
 
 json_file = convert_college_info_to_json('organized_college_stories.txt')
 # Save json_file as a file
-with open('new_college_stories.json', 'w') as file:
+with open('new_college_stories.json', 'w', encoding='utf-8') as file:
     json.dump(json_file, file, indent=4)
-    
-exit()
+
 
 def json_to_csv(json_file):
     # this function takes in a json file and converts the json object into a csv file
