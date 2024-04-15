@@ -78,12 +78,11 @@ if user_verification.lower() == "n":
     print("Please update the single_ppxt variable and file path in the script and run again.")
     exit()
 
-if single_ppxt:
+if single_ppxt: #if true, evaluate one ppxt file
     ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Module 6.pptx')
     file_name = ppxt_file_glob[0].split("\\")[-1]
     run_eval(ppxt_file_glob, file_name)
-else:
-    #run through an entire folder of ppxt files
+else: #if false evaluate all ppxt files in an entire folder of ppxt files
     ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\modules\*.pptx')
     k = 0
     for i in ppxt_file_glob:
