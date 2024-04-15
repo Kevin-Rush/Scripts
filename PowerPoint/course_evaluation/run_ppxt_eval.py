@@ -1,10 +1,9 @@
 import ppxt_processor
 import convert_slides_to_pdf_to_image
 import ppxt_text as ppxt_text
-import grammar_eval
-from extract_script import extract_script
+#import grammar_eval
 import glob
-from colorama import Fore, Style
+from colorama import Fore
 import pandas as pd
 import os
 
@@ -27,7 +26,7 @@ def run_eval(ppxt_file_glob, file_name):
     # print(f"{Fore.GREEN}---------------------Grammar Eval---------------------{Fore.RESET}")
     print(ppxt_file_glob)
     print(ppxt_file_glob[0])
-    
+    print(f"{Fore.GREEN}---------------------Process Deck---------------------{Fore.RESET}")
     df = ppxt_processor.process(ppxt_file_glob[0])
     print(f"{Fore.GREEN}---------------------Slide Deck Contents Saved in DataFrame---------------------{Fore.RESET}")
 
@@ -38,7 +37,7 @@ def run_eval(ppxt_file_glob, file_name):
         print(f"{word}: {df[word].sum()}")
     print(f"{Fore.GREEN}---------------------Common Generated Terms Counted---------------------{Fore.RESET}")
 
-    df.to_csv(root + file_name + "ppxt_pre_eval.csv", index=False)
+    # df.to_csv(root + file_name + "ppxt_pre_eval.csv", index=False)
     print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
 
     # df = pd.read_csv(root + file_name + "ppxt_pre_eval.csv")
@@ -73,7 +72,7 @@ def run_eval(ppxt_file_glob, file_name):
 
 
 single_ppxt = False
-user_verification = input("Have you updated the single_ppxt and file path? (Y/N) ")
+user_verification = input("Have you updated the single_ppxt variable and file path? (Y/N) ")
 
 if user_verification == "N" or user_verification == "n":
     print("Please update the single_ppxt variable and file path in the script and run again.")
@@ -85,7 +84,7 @@ if single_ppxt:
     run_eval(ppxt_file_glob, file_name)
 else:
     #run through an entire folder of ppxt files
-    ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\M4AI\*.pptx')
+    ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\modules\*.pptx')
     k = 0
     for i in ppxt_file_glob:
         file_name = ppxt_file_glob[k].split("\\")[-1]
