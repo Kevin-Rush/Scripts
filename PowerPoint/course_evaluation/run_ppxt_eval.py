@@ -74,7 +74,7 @@ def run_eval(ppxt_file_glob, file_name):
 single_ppxt = False
 user_verification = input("Have you updated the single_ppxt variable and file path? (Y/N) ")
 
-if user_verification == "N" or user_verification == "n":
+if user_verification.lower() == "n":
     print("Please update the single_ppxt variable and file path in the script and run again.")
     exit()
 
