@@ -31,6 +31,17 @@ config_list = config_list_from_json("OAI_CONFIG_LIST")
 
 # ------------------ Create functions ------------------ #
 
+#function to check previously searched urls
+def check_url(url):
+    with open("searched_urls.txt", "r") as file:
+        urls = file.readlines()
+        if url in urls:
+            print(f"{Fore.GREEN}---------------------New URL---------------------{Fore.RESET}")
+            return True
+        else:
+            print(f"{Fore.RED}---------------------Old URL---------------------{Fore.RESET}")
+            return False
+
 # Function for google search
 def google_search(search_keyword):    
     url = "https://google.serper.dev/search"
@@ -189,7 +200,8 @@ researcher = GPTAssistantAgent(
 researcher.register_function(
     function_map={
         "web_scraping": web_scraping,
-        "google_search": google_search
+        "google_search": google_search,
+        "check_url": check_url
     }
 )
 
@@ -235,7 +247,7 @@ group_chat_manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={"
 # """
 
 #read a text file
-with open("orgs.txt", "r") as file:
+with open("test_orgs.txt", "r") as file:
     orgs = [line.strip() for line in file]
 
 #remove the first element in orgs
@@ -251,8 +263,8 @@ for i in orgs:
     print(f"{Fore.GREEN}---------------------Search for {i} Complete---------------------{Fore.RESET}")
 
 #create a copy of log.txt
-with open("log.txt", "r") as file:
+with open("test_log.txt", "r") as file:
     log = file.read()
 
-with open("log_copy.txt", "a") as f:
+with open("test_log_copy.txt", "a") as f:
     f.write(log)
