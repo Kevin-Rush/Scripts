@@ -3,7 +3,7 @@ from openai import OpenAI
 import ppxt_vision
 import utils
 import pandas as pd
-
+import os
 from dotenv import load_dotenv
 
 load_dotenv()

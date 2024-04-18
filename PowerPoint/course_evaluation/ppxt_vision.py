@@ -3,6 +3,7 @@ import base64
 from colorama import Fore
 import requests
 import openai
+import os
 from dotenv import load_dotenv
 
 load_dotenv()

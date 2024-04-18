@@ -5,11 +5,11 @@ import ppxt_text as ppxt_text
 import glob
 from colorama import Fore
 import pandas as pd
-import os
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
-sapling_api_key = os.getenv("SERP_API_KEY")
+sapling_api_key = os.getenv("SAPLING_API_KEY")
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/common_generated_terms.txt", "r") as file:
     common_generated_terms = file.read().splitlines()
@@ -72,7 +72,7 @@ def run_eval(ppxt_file_glob, file_name):
 
 
 
-single_ppxt = False
+single_ppxt = True
 user_verification = input("Have you updated the single_ppxt variable and file path? (Y/N) ")
 
 if user_verification.lower() == "n":
@@ -80,7 +80,7 @@ if user_verification.lower() == "n":
     exit()
 
 if single_ppxt: #if true, evaluate one ppxt file
-    ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Module 6.pptx')
+    ppxt_file_glob = glob.glob(r'C:\Users\kevin\Downloads\Week 03 - Cyber Threat Landscape_.pptx')
     file_name = ppxt_file_glob[0].split("\\")[-1]
     run_eval(ppxt_file_glob, file_name)
 else: #if false evaluate all ppxt files in an entire folder of ppxt files
