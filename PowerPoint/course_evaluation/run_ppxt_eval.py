@@ -68,7 +68,7 @@ def run_eval(ppxt_file_glob, file_name):
 
     #save the dataframe to a csv
     file_name = file_name.split(".")[0]
-    df.to_csv(root + file_name + "ppxt_eval.csv", index=False)
+    df.to_csv(root + file_name + "_ppxt_eval.csv", index=False)
     print(f"{Fore.GREEN}---------------------Output Saved---------------------{Fore.RESET}")
 
 
