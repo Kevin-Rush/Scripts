@@ -4,8 +4,11 @@ import ppxt_vision
 import utils
 import pandas as pd
 
-with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
-    gpt_api_key = file.read()
+from dotenv import load_dotenv
+
+load_dotenv()
+gpt_api_key = os.getenv("FS_LLM_EVAL_OPENAI_API_KEY")
+
 client = OpenAI()
 client.api_key = gpt_api_key
 

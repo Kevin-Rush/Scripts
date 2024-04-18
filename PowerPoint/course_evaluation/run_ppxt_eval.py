@@ -6,9 +6,10 @@ import glob
 from colorama import Fore
 import pandas as pd
 import os
+from dotenv import load_dotenv
 
-with open("C:/Users/kevin/Documents/Coding/Scripts/sapling_api_key.txt", "r") as file:
-    sapling_api_key = file.read()
+load_dotenv()
+sapling_api_key = os.getenv("SERP_API_KEY")
 
 with open("C:/Users/kevin/Documents/Coding/Scripts/PowerPoint/course_evaluation/common_generated_terms.txt", "r") as file:
     common_generated_terms = file.read().splitlines()

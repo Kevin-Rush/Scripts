@@ -3,9 +3,10 @@ import base64
 from colorama import Fore
 import requests
 import openai
+from dotenv import load_dotenv
 
-with open("C:/Users/kevin/Documents/Coding/Scripts/gpt_api_key.txt", "r") as file:
-    gpt_api_key = file.read()
+load_dotenv()
+gpt_api_key = os.getenv("FS_LLM_EVAL_OPENAI_API_KEY")
 
 # Function to encode the image
 def encode_image(image_path):
