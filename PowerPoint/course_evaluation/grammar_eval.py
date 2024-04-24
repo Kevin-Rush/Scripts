@@ -44,3 +44,20 @@ def evaluate(ppxt_filepath, sapling_api_key):
     presentation.save(ppxt_filepath[:-5] + "_edited.pptx")
     changes_made.close()
     print("Grammar evaluation complete")
+
+def check_font_type(ppxt_filepath):
+    presentation = Presentation(ppxt_filepath)
+    for slide in presentation.slides:
+        for shape in slide.shapes:
+            if shape.has_text_frame:
+                for paragraph in shape.text_frame.paragraphs:
+                    for run in paragraph.runs:
+                        print(run.font.name)
+                        if run.font.name != "Arial":
+                            print("Wrong font detected!")
+                            print("Slide: ", slide.number)
+                            print("Font: ", run.font.name)
+                            print("Text: ", run.text)
+
+                            #change the font to the correct font
+                            run.font.name = "Arial"
