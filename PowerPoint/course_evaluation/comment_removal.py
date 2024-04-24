@@ -29,27 +29,32 @@ def remove_aspose_watermark(pptx_file):
     presentation = pptx.Presentation(pptx_file)
     found = False
     for slide in presentation.slides:
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                for paragraph in shape.text_frame.paragraphs:
-                    paragraph_text = "".join(run.text for run in paragraph.runs)
-                    # Check if the paragraph text contains the Aspose watermark
-                    if "Created with Aspose.Slides for Python" in paragraph_text:
-                        print("Found Aspose watermark")
-                        # Remove the Aspose watermark
-                        found = True
-            if found:
-                #clear the entire text frame
-                shape.text_frame.clear()
-                found = False
+        for i in range(len(slide.shapes)):
+            try:
+                shape = slide.shapes[i]
+                if shape.has_text_frame:
+                    for paragraph in shape.text_frame.paragraphs:
+                        paragraph_text = "".join(run.text for run in paragraph.runs)
+                        # Check if the paragraph text contains the Aspose watermark
+                        if "Created with Aspose.Slides for Python" in paragraph_text:
+                            print("Found Aspose watermark")
+                            # Remove the Aspose watermark
+                            found = True
+                if found:
+                    #clear the entire text frame
+                    shape.text_frame.clear()
+                    found = False
+            except:
+                print("Error accessing shape")
+                continue
     
     # Save the modified presentation
     presentation.save(pptx_file)
 
 
-# Specify the input PowerPoint file and output text file
-pptx_file = "C:\\Users\\kevin\\Downloads\\comments_test.pptx"
-output_file = 'comments_output.txt'
+# # Specify the input PowerPoint file and output text file
+# pptx_file = "C:\\Users\\kevin\\Downloads\\comments_test.pptx"
+# output_file = 'comments_output.txt'
 
-# Call the function to extract comments and remove them from the PowerPoint file
-extract_comments_from_pptx(pptx_file, output_file)
+# # Call the function to extract comments and remove them from the PowerPoint file
+# extract_comments_from_pptx(pptx_file, output_file)
