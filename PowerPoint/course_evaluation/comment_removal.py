@@ -1,5 +1,6 @@
 import pptx
 import aspose.slides
+# from aspose.words import Document, NodeType
 
 
 def extract_comments_from_pptx(pptx_file, output_file):
@@ -8,6 +9,8 @@ def extract_comments_from_pptx(pptx_file, output_file):
 
     # Open the output file in write mode
     with open(output_file, 'w') as file:
+
+        # comments = doc.get_child_nodes(NodeType.COMMENT, True)
 
         # Loop through the list of authors
         for author in presentation.comment_authors:
@@ -18,7 +21,9 @@ def extract_comments_from_pptx(pptx_file, output_file):
                 # Write the comment to the output file
                 file.write(f"Comment by {author.name}, at {comment.created_time}: {comment.text}\n")
 
+
             author.comments.clear()
+    presentation.comment_authors.clear()
 
     # Save the modified presentation
     presentation.save(pptx_file, aspose.slides.export.SaveFormat.PPTX)

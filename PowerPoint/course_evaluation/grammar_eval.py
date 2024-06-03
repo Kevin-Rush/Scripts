@@ -1,5 +1,5 @@
 import requests
-from sapling import SaplingClient
+# from sapling import SaplingClient
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 import pandas as pd
@@ -47,17 +47,33 @@ def evaluate(ppxt_filepath, sapling_api_key):
 
 def check_font_type(ppxt_filepath):
     presentation = Presentation(ppxt_filepath)
+    i = 1
     for slide in presentation.slides:
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                for paragraph in shape.text_frame.paragraphs:
-                    for run in paragraph.runs:
-                        print(run.font.name)
-                        if run.font.name != "Arial":
-                            print("Wrong font detected!")
-                            print("Slide: ", slide.number)
-                            print("Font: ", run.font.name)
-                            print("Text: ", run.text)
+        if i > 4:
+            for shape in slide.shapes:
+                if shape.has_text_frame:
+                    for paragraph in shape.text_frame.paragraphs:
+                        for run in paragraph.runs:
+                            print(run.font.name)
+                            if shape.is_placeholder and shape.placeholder_format.idx == 0:  # idx 0 is the title placeholder
+                                if run.font.name != "IntelOne Display Light":
+                                    print("Wrong font detected!")
+                                    print("Slide Number: ", i)
+                                    print("Font: ", run.font.name)
+                                    print("Text: ", run.text)
 
-                            #change the font to the correct font
-                            run.font.name = "Arial"
+                                    #change the font to the correct font
+                                    run.font.name = "IntelOne Display Light"
+                                    print("Font changed to IntelOne Display Light")
+                            else:
+                                if run.font.name != "IntelOne Display Regular":
+                                    print("Wrong font detected!")
+                                    print("Slide Number: ", i)
+                                    print("Font: ", run.font.name)
+                                    print("Text: ", run.text)
+
+                                    #change the font to the correct font
+                                    run.font.name = "IntelOne Display Regular"
+                                    print("Font changed to IntelOne Display Regular")
+        i += 1
+    presentation.save(ppxt_filepath)

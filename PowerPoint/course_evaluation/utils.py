@@ -18,22 +18,32 @@ def clean_filename(filename):
         filename = filename.replace(" (1)", "")
     return filename
 
-def convert_txt_JSON(filename):
-    #convert a txt file to a JSON file
-    with open(filename, 'r') as file:
-        lines = file.readlines()
-        data = {}
-        for line in lines:
-            line = line.split(":")
-            key, value = line.split(":")
-            data[key.strip()] = value.strip()
+# def convert_txt_JSON(filename):
+#     #convert a txt file to a JSON file
+#     with open(filename, 'r') as file:
+#         lines = file.readlines()
+#         data = {}
+#         for i in range(0, len(lines), 4):
+#             file_name = lines[i].strip()
+#             total_prompt_tokens = lines[i+1].split(': ')[1].strip()
+#             total_completion_tokens = lines[i+2].split(': ')[1].strip()
+#             total_tokens_used = lines[i+3].split(': ')[1].strip()
 
-    #write the data to a JSON file
-    print(data)
-    with open(filename.split(".")[0] + ".json", 'a') as file:
-        json.dump(data, file)
+#             # Append the data to the list as a dictionary
+#             entry = {
+#                 "file_name": file_name.replace("\\", "\\\\"),
+#                 "Total Prompt Tokens": total_prompt_tokens,
+#                 "Total Completion Tokens": total_completion_tokens,
+#                 "Total Tokens Used": total_tokens_used
+#             }
+#             data.append(entry)
+
+#     #write the data to a JSON file
+#     print(data)
+#     with open(filename.split(".")[0] + ".json", 'a') as file:
+#         json.dump(data, file)
 
    
     
-filename = "token_logs.txt"
-convert_txt_JSON(filename)
+# filename = "token_logs.txt"
+# convert_txt_JSON(filename)

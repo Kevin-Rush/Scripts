@@ -29,20 +29,25 @@ def process_ppxt_folder(repository_path, output_file):
 
     print(f"All ppxt files processed. Output saved to {output_file}.")
 
-output_file = "final_output_igai.txt"
-repository_path = "C:/Users/kevin/Downloads/IGAI Font Check Test"
+output_file = "final_comments_igai.txt"
+repository_path = "C:/Users/kevin/Downloads/OneDrive_2024-05-03"
 
-ppxt_files = [file for file in os.listdir(repository_path) if file.endswith(".pptx")]
-# print(ppxt_files)
+ppxt_files = [os.path.join(root, file) 
+              for root, dirs, files in os.walk(repository_path) 
+              for file in files if file.endswith(".pptx")]
+# for ppxt_file in ppxt_files:
+#     print(ppxt_file)
 i = 1
 for pptx_file in ppxt_files:
     # print(f"Checking Font for Week {i} of {len(ppxt_files)}")
     pptx_file_path = os.path.join(repository_path, pptx_file)
     # check_font_type(pptx_file_path)
-    print(f"Removing Comments for Week {i} of {len(ppxt_files)}")
     #isolate the file name from pptx_file
     week_name = pptx_file.split(".")[0]
+    print(f"Removing Comments for {week_name} of {len(ppxt_files)}")
+
     extract_comments_from_pptx(pptx_file_path, week_name + output_file)
+    i += 1
 
 
 # Call the function to extract comments and remove them from the PowerPoint file
