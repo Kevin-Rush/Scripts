@@ -3,8 +3,6 @@
 """
 This script processes a folder containing PowerPoint files (.pptx) and extracts information from each slide, such as slide number, title, subtitle, slide text, and notes text. It then saves the extracted information to a text file.
 
-The script first imports necessary modules and functions, including 'os' for file operations, 'colorama' for colored output, 'comment_removal' for extracting comments from PowerPoint files, 'ppxt_processor' for processing the PowerPoint files, 'utils' for utility functions, 'pandas' for data manipulation, and 'grammar_eval' for checking font types.
-
 The main function 'process_ppxt_folder' takes the repository path and output file path as input. It iterates through all the PowerPoint files in the repository, processes each file using the 'process' function, and writes the extracted information to the output file. The information includes the file name, slide number, title, subtitle, slide text, and notes text.
 
 After processing all the PowerPoint files, the script prints a message indicating that all files have been processed and the output file has been saved.
@@ -15,16 +13,6 @@ To use this script, provide the repository path and output file path as argument
 """
 
 import os
-from colorama import Fore
-from comment_removal import extract_comments_from_pptx
-from ppxt_processor import process
-import utils
-import pandas as pd
-from grammar_eval import check_font_type
-
-# Rest of the code...
-import os
-
 from colorama import Fore
 from comment_removal import extract_comments_from_pptx
 from ppxt_processor import process
@@ -54,7 +42,7 @@ def process_ppxt_folder(repository_path, output_file):
 
     print(f"All ppxt files processed. Output saved to {output_file}.")
 
-output_file = "final_comments_igai.txt"
+output_file = "course_info.txt"
 repository_path = "C:/Users/kevin/Downloads/OneDrive_2024-05-03"
 
 ppxt_files = [os.path.join(root, file) 
