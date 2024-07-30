@@ -1,3 +1,28 @@
+
+
+"""
+This script processes a folder containing PowerPoint files (.pptx) and extracts information from each slide, such as slide number, title, subtitle, slide text, and notes text. It then saves the extracted information to a text file.
+
+The script first imports necessary modules and functions, including 'os' for file operations, 'colorama' for colored output, 'comment_removal' for extracting comments from PowerPoint files, 'ppxt_processor' for processing the PowerPoint files, 'utils' for utility functions, 'pandas' for data manipulation, and 'grammar_eval' for checking font types.
+
+The main function 'process_ppxt_folder' takes the repository path and output file path as input. It iterates through all the PowerPoint files in the repository, processes each file using the 'process' function, and writes the extracted information to the output file. The information includes the file name, slide number, title, subtitle, slide text, and notes text.
+
+After processing all the PowerPoint files, the script prints a message indicating that all files have been processed and the output file has been saved.
+
+The script also defines a list of PowerPoint files 'ppxt_files' by recursively searching for files with the '.pptx' extension in the repository path. It then iterates through each PowerPoint file, checks the font type using the 'check_font_type' function, and removes comments from the PowerPoint file using the 'extract_comments_from_pptx' function.
+
+To use this script, provide the repository path and output file path as arguments to the 'process_ppxt_folder' function and run the script.
+"""
+
+import os
+from colorama import Fore
+from comment_removal import extract_comments_from_pptx
+from ppxt_processor import process
+import utils
+import pandas as pd
+from grammar_eval import check_font_type
+
+# Rest of the code...
 import os
 
 from colorama import Fore
