@@ -21,7 +21,7 @@ def extract_text_between_markers(text, start_marker, end_marker):
 with open("orgs.txt", "r") as file:
     orgs = [line.strip() for line in file]
 
-with open('output_0828_graduates.txt', 'r', encoding='UTF-16') as file:
+with open('output_0828_certificates.txt', 'r', encoding='UTF-16') as file:
     log_content = file.read()
 
 df = pd.DataFrame(columns=['College', 'Extracted Text'])
@@ -34,7 +34,7 @@ for i in orgs:
 
     df = df.append({'College': i, 'Extracted Text': extracted_text}, ignore_index=True)
 
-# df.to_csv('extracted_log_data.csv', index=False)
+df.to_csv('extracted_log_data_certs.csv', index=False)
 
 
 print("Length of df:", len(df)) 
@@ -42,3 +42,11 @@ print("Number of entries in College:", len(df['College']))
 print("Number of entries in Extracted Text:", len(df['Extracted Text'])) 
 print("Number of null entries in College:", df['College'].isnull().sum()) 
 print("Number of null entries in Extracted Text:", df['Extracted Text'].isnull().sum())
+
+null_entries = df[df['Extracted Text'].isnull()]
+
+if not null_entries.empty:
+    null_row = null_entries.index[0]
+    print("Row with null entry:", null_row)
+else:
+    print("No null entries found in Extracted Text")
