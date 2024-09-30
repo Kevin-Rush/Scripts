@@ -6,13 +6,51 @@ import os
 import json
 
 
+def clean_log(file):
+    # read and write to a file
+    with open(file, 'r+', encoding='latin-1') as file:
+        lines = file.readlines()
+        file.seek(0)  # move the file pointer to the beginning of the file
+        # file.truncate()  # clear the file content
+        for line in lines:
+            line = line.replace('---------------------Search Complete---------------------', '')
+            line = line.replace('---------------------Scrape Response---------------------', '')
+            line = line.replace('>>>>>>>> EXECUTING FUNCTION google_search...', '')
+            line = line.replace('>>>>>>>> EXECUTING FUNCTION web_scraping...', '')
+            line = line.replace('Scraping website...', '')
+            line = line.replace('''--------------------------------------------------------------------------------\n\n\nTERMINATE\n\n\n--------------------------------------------------------------------------------''', '')
+            line = line.replace('0m', '')
+            line = line.replace('35m', '')
+            line = line.replace('32m', '')
+            line = line.replace('33m', '')
+            line = line.replace('39m', '')
+            line = line.replace('', '')
+            line = line.replace('[', '')
+            line = line.replace(']', '')
+            line = line.replace('਍ഀ', '')
+            
+            file.write(line)
+
+file = "log_May.txt"
+clean_log(file)
+exit()
+
+#use remove_duplicates on searched_urls.txt
+
+with open("searched_urls.txt", 'r') as file:
+    lines = file.readlines()
+    lines = list(set(lines))
+with open("searched_urls.txt", 'w') as file:
+    for line in lines:
+        file.write(line)
+
+
+
 load_dotenv()
 gpt_api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI()
 client.api_key = gpt_api_key
 model = "gpt-4-0125-preview"
-
-exit()
 
 def convert_college_info_to_json(file):
     # this function takes in a text file and converts the text into a json object. Each entry in the json object is a dictionary with the following: category, college_name, infor_url, and info_text
@@ -38,10 +76,10 @@ def convert_college_info_to_json(file):
             json_data.append(result)
     return json_data
 
-json_file = convert_college_info_to_json('organized_college_stories.txt')
-# Save json_file as a file
-with open('new_college_stories.json', 'w', encoding='utf-8') as file:
-    json.dump(json_file, file, indent=4)
+# json_file = convert_college_info_to_json('organized_college_stories.txt')
+# # Save json_file as a file
+# with open('new_college_stories.json', 'w', encoding='utf-8') as file:
+#     json.dump(json_file, file, indent=4)
 
 
 def json_to_csv(json_file):
@@ -73,31 +111,6 @@ def process_log(file_path):
 # with open('notable_college_info.json', 'w') as file:
 #     json.dump(json_data, file, indent=4)
 
-
-def clean_log(file):
-    # read and write to a file
-    with open(file, 'r+', encoding='utf-8') as file:
-        lines = file.readlines()
-        file.seek(0)  # move the file pointer to the beginning of the file
-        # file.truncate()  # clear the file content
-        for line in lines:
-            line = line.replace('---------------------Search Complete---------------------', '')
-            line = line.replace('---------------------Scrape Response---------------------', '')
-            line = line.replace('>>>>>>>> EXECUTING FUNCTION google_search...', '')
-            line = line.replace('>>>>>>>> EXECUTING FUNCTION web_scraping...', '')
-            line = line.replace('Scraping website...', '')
-            line = line.replace('''--------------------------------------------------------------------------------\n\n\nTERMINATE\n\n\n--------------------------------------------------------------------------------''', '')
-            line = line.replace('0m', '')
-            line = line.replace('35m', '')
-            line = line.replace('32m', '')
-            line = line.replace('33m', '')
-            line = line.replace('39m', '')
-            line = line.replace('', '')
-            line = line.replace('[', '')
-            line = line.replace(']', '')
-            line = line.replace('਍ഀ', '')
-            
-            file.write(line)
 
 # def extract_emails(file_path):
 #     emails = []
