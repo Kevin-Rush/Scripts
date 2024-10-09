@@ -16,3 +16,4 @@ OAI_CONFIG_LIST
 ppxt_images/
 scripts/    
 __pycache__/
+.cache/
