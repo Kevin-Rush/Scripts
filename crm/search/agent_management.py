@@ -20,6 +20,7 @@ def start_converstation(user_proxy, agents, message):
     groupchat = autogen.GroupChat(agents=agents, messages=[], max_round=15)
 
     group_chat_manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={"config_list": config_list})
+    print(message)
     response = user_proxy.initiate_chat(group_chat_manager, clear_history=True, message=message, silent=False)
     response_researcher = return_reseacher_responses(response.chat_history)
     # print(response_researcher)

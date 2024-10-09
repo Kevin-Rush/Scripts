@@ -18,7 +18,8 @@ with open("orgs.txt", "r") as file:
     orgs = [line.strip() for line in file]
 
 prompts = [
-    #"Research for any government funding (federal, state, or local grants) for the AI program at {i}. Please exclude any funding from private companies! I only want government funding.",
+    "What EU or France grants are there to help AI programs at Business Schools in France?"
+    # "Research for any government funding (federal, state, or local grants) for the AI program at {i}. Please exclude any funding from private companies! I only want government funding.",
     # "Research for any student success stories (projects, awards, competitions, etc.) from the AI program at {i}. I must stress that I only want you to find stories about AI and from 2024, I DO NOT WANT ANY stories older than 2024!",
     # "Research for the enrollment numbers for the AI program at {i}. Please be very careful to ONLY report enrollment numbers for the AI program NOT any other program or the entire school.",
     # "Research for the number of AI degrees awarded by {i}. Please be very careful to ONLY report on the number of degrees awarded for the AI program NOT any other program or the entire school.",
@@ -27,12 +28,12 @@ prompts = [
     # "Research for any news about AMD collaborating with {i} on an AI program. Only report stories about the AI program from {i} and NVIDIA, I don't want any stroeis about NVIDIA collaborating on any other program with any other college.",
     # "Research for any news about Microsoft collaborating with {i} on an AI program. Only report stories about the AI program from {i} and Microsoft, I don't want any stroeis about Microsoft collaborating on any other program with any other college.",
     # "Research for any news about AWS collaborating with {i} on an AI program. Only report stories about the AI program from {i} and AWS, I don't want any stroeis about AWS collaborating on any other program with any other college.",
-    "What is the AACSB AI Conference with the neoma business school about?",
-    "What is going to be discussed at the AACSB AI Conference with the neoma business school?",
-    "Who will be attending the AACSB AI Conference with the neoma business school?",
-    "What is the purpose of the AACSB AI Conference with the neoma business school?",
-    "What is the best way for a small AI consultant to get the most out of the AACSB AI Conference with the neoma business school?",
-    "What opportunities are there for an Ed Tech company to leverage attending the AACSB AI Conference with the neoma business school?",
+    # "What is the AACSB AI Conference with the neoma business school about?",
+    # "What is going to be discussed at the AACSB AI Conference with the neoma business school?",
+    # "Who will be attending the AACSB AI Conference with the neoma business school?",
+    # "What is the purpose of the AACSB AI Conference with the neoma business school?",
+    # "What is the best way for a small AI consultant to get the most out of the AACSB AI Conference with the neoma business school?",
+    # "What opportunities are there for an Ed Tech company to leverage attending the AACSB AI Conference with the neoma business school?",
 ]
 
 
@@ -52,13 +53,12 @@ for p in prompts:
         for i in orgs:
             print(f"{Fore.YELLOW}---------------------Searching for {i}---------------------{Fore.RESET}")
             print(i)
-            message = f"{p.format(i=i)}"
+            p = f"{p.format(i=i)}"
 
             try:
                 user_proxy = agents.create_user_proxy()
-                agnets = [user_proxy, agents.create_researcher(), agents.create_research_manager()]
-
-                response_researcher = start_converstation(user_proxy, agnets, message)
+                agents = [user_proxy, agents.create_researcher(), agents.create_research_manager()]
+                response_researcher = start_converstation(user_proxy, agents, message=p)
 
                 current_date = datetime.datetime.now().strftime("%Y-%m-%d")
                 file_name = f"{k}_prompt_log_{current_date}_{i}.txt"
@@ -83,7 +83,7 @@ for p in prompts:
             user_proxy = agents.create_user_proxy()
             agnets = [user_proxy, agents.create_researcher(), agents.create_research_manager()]
 
-            response_researcher = start_converstation(user_proxy, agnets, message)
+            response_researcher = start_converstation(user_proxy, agnets, message=p)
 
             current_date = datetime.datetime.now().strftime("%Y-%m-%d")
             file_name = f"{k}_prompt_log_2_{current_date}.txt"

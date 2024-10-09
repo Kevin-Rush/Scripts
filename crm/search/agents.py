@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from colorama import Fore
 import autogen
@@ -7,7 +8,10 @@ from autogen import UserProxyAgent
 
 from .agent_functions import web_scraping, google_search
 
+load_dotenv()
+os.environ['AUTOGEN_USE_DOCKER'] = '0'
 config_list = config_list_from_json("OAI_CONFIG_LIST")
+
 
 def create_user_proxy():
     print(f"{Fore.YELLOW}---------------------Create user proxy agent---------------------{Fore.RESET}")
