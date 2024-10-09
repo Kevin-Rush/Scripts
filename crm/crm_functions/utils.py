@@ -1,4 +1,6 @@
 import os
+from pptx import Presentation
+
 
 from .api_handling import make_get_request
 from . import party_functions as party_fns
@@ -79,12 +81,41 @@ def save_college_ids_to_file(filename="college_ids.txt"):
     else:
         print("No colleges found.")
 
-def main():
-    # Save professor names and IDs to a file
-    save_professor_ids_to_file()
+def extract_pptx_data(pptx_file):
+    prs = Presentation(pptx_file)
+    slide_data = {}
 
-    # Save college names and IDs to a file
-    save_college_ids_to_file()
+    for slide in prs.slides:
+        title = ''
+        body_texts = []
 
-if __name__ == "__main__":
-    main()
+        # Attempt to get the slide title
+        if slide.shapes.title and slide.shapes.title.has_text_frame:
+            title = slide.shapes.title.text.strip()
+        else:
+            # If there's no title placeholder, use the first shape with text as the title
+            for shape in slide.shapes:
+                if shape.has_text_frame and shape.text.strip():
+                    title = shape.text.strip()
+                    break
+
+        # Collect body text from all text shapes, excluding the title
+        for shape in slide.shapes:
+            if shape.has_text_frame and shape.text.strip():
+                if shape != slide.shapes.title:
+                    body_texts.append(shape.text.strip())
+
+        body_text = '\n'.join(body_texts).strip()
+        slide_data[title] = body_text
+
+    return slide_data
+
+
+
+
+pptx_file = r'C:\Users\kevin\Documents\Coding\Scripts\crm\search\log_presentation_working.pptx'
+data = extract_pptx_data(pptx_file)
+for college_name, slide_text in data.items():
+    print(f"College Name: {college_name}")
+    print(f"Slide Text: {slide_text}\n")
+
