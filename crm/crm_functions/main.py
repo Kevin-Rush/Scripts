@@ -3,7 +3,6 @@ import os
 import time
 
 from . import note_handling as notes_fns 
-from . import entry_functions as entry_fns 
 from . import party_functions as party_fns 
 from . import org_functions as org_fns 
 
