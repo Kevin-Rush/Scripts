@@ -17,7 +17,6 @@ def return_reseacher_responses(chat_history):
 def start_converstation(user_proxy, agents, message):
     print(f"{Fore.YELLOW}---------------------Create groupchat---------------------{Fore.RESET}")
 
-    user_proxy = agents.create_user_proxy()
     groupchat = autogen.GroupChat(agents=agents, messages=[], max_round=15)
 
     group_chat_manager = autogen.GroupChatManager(groupchat=groupchat, llm_config={"config_list": config_list})
